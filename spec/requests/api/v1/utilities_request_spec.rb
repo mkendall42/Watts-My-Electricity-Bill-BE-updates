@@ -10,7 +10,11 @@ RSpec.describe "Utilities controller", type: :request do
         response_message = JSON.parse(response.body, symbolize_names: true)
 
         expect(response).to_not be_successful
-        expect(response_message).to eq({ message: "Error" })
+        # expect(response_message).to eq({ message: "Error" })
+        expect(response_message[:status]).to eq(400)
+        expect(response_message[:message].length).to eq(7)
+        expect(response_message[:message][2]).to eq("Error: required parameter 'longitude' is missing.")
+
       end
 
       #One example (simple) - basic mocked/stubbed external API call to one location

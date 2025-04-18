@@ -4,9 +4,9 @@ class Api::V1::UtilitiesController < ApplicationController
 
   def index
     #Check request and params from FE, verify presence and validity
-    if validate_params(params) != []
-      render json: { message: "Error" }, status: 400
-      # return
+    if (messages = validate_params(params)) != []
+      # render json: { message: "Error" }, status: 400
+      render json: ErrorSerializer.format_params_error(messages, 400), status: 400
     else
       #Hand off to gateway / Farady to make external API call(s)
       #NOTE: will be implemented in later ticket
@@ -33,7 +33,7 @@ class Api::V1::UtilitiesController < ApplicationController
     messages = []
     required_params = [:nickname, :latitude, :longitude, :residence_type, :num_residents, :efficiency_level, :username]
     required_params.each do |required_param|
-      messages << "Error: required parameter #{required_param} is missing." if !params[required_param].present?
+      messages << "Error: required parameter '#{required_param}' is missing." if !params[required_param].present?
     end
 
     #Also check data ranges are valid (could move to Rails 'validate' if we add this to DB later)
