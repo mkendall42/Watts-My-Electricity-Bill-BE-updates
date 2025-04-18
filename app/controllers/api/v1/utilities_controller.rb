@@ -19,9 +19,14 @@ class Api::V1::UtilitiesController < ApplicationController
         energy_consumption: 2500,
         cost: 380
       }
+
+      binding.pry
+
+      residence_data = EnergyInfo.new(params.permit(:nickname, :latitude, :longitude, :residence_type, :num_residents, :efficiency_level, :username))
   
       #Process anything necessary / calculations, then serialize and return JSON to FE.
       render json: processed_data
+      # render json: UtilitiesSerializer.format_energy_data(residence_data)
     end
   end
 
