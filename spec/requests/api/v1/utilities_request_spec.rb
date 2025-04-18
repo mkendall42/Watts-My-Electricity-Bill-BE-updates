@@ -1,8 +1,18 @@
 require "rails_helper"
 
-RSpec.describe UtilitiesController, type: :request do
+RSpec.describe "Utilities controller", type: :request do
   describe "#show - FE requests utility data rates from BE for specific search criteria" do
     context "happy paths" do
+      it "very basic initial test" do
+        #Very basic initial test(s)
+        get api_v1_utilities_path
+        # get "/api/v1/utilities"
+        response_message = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response).to_not be_successful
+        expect(response_message).to eq({ message: "Error" })
+      end
+
       #One example (simple) - basic mocked/stubbed external API call to one location
 
       #Another example (simple) - basic mocked/stubbed external API call to second location
