@@ -31,7 +31,7 @@ class Api::V1::UtilitiesController < ApplicationController
     # binding.pry
 
     messages = []
-    required_params = [:nickname, :latitude, :longitude, :residence_type, :num_residents, :efficiency_level, :username]
+    required_params = [:nickname, :latitude, :longitude, :residence_type, :num_residents, :efficiency_level]
     required_params.each do |required_param|
       messages << "Error: required parameter '#{required_param}' is missing." if !params[required_param].present?
     end
