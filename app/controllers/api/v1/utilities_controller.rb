@@ -14,9 +14,14 @@ class Api::V1::UtilitiesController < ApplicationController
       #Once external API has responded, parse raw data and massage / store into object (PORO likely?)
       #NOTE: ensure this 'waits' properly until external API has responded, etc.
       #NOTE: for starters, just mock returned basic data (even skipping PORO) to render
+      processed_data = {
+        nickname: params[:nickname],
+        energy_consumption: 2500,
+        cost: 380
+      }
   
       #Process anything necessary / calculations, then serialize and return JSON to FE.
-      render json: { message: "Success" }
+      render json: processed_data
     end
   end
 
