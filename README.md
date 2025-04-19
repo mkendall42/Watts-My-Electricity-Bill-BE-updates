@@ -4,7 +4,7 @@
 
 This Rails API is the backend for the "Watts My Electricity Bill".  It exposes appropriate endpoints to provide frotnend functionality to provide information on users, reports that they create / searches they make, and makes external API call(s) to pull raw utility data and calculate estimated expenses.
 
-In order to run this backend, execute `rails s` (the server will run on port 5173).
+In order to run this backend, execute `rails s`.  The server will run on port 3000 for now.  We may need to adjust this if it conflicts with the FE.
 
 Note: we might wish to have more info on how to set this up for new user, deploying, etc.  Optionally can be done later.
 

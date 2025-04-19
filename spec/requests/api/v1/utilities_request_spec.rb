@@ -8,8 +8,6 @@ RSpec.describe "Utilities controller", type: :request do
         get "#{api_v1_utilities_path}?nickname=apt&latitude=-19&longitude=-133&residence_type=apartment&num_residents=2&efficiency_level=1"
         utility_info = JSON.parse(response.body, symbolize_names: true)
 
-        # binding.pry
-
         expect(response).to be_successful
         expect(utility_info).to have_key(:nickname)
         expect(utility_info).to have_key(:energy_consumption)
@@ -32,7 +30,7 @@ RSpec.describe "Utilities controller", type: :request do
           response_message = JSON.parse(response.body, symbolize_names: true)
 
           expect(response).to_not be_successful
-          expect(response_message[:status]).to eq(400)
+          expect(response_message[:status]).to eq(422)
           expect(response_message[:message].length).to eq(6)
           expect(response_message[:message][2]).to eq("Error: required parameter 'longitude' is missing.")
         end
@@ -42,7 +40,7 @@ RSpec.describe "Utilities controller", type: :request do
           response_message = JSON.parse(response.body, symbolize_names: true)
 
           expect(response).to_not be_successful
-          expect(response_message[:status]).to eq(400)
+          expect(response_message[:status]).to eq(422)
           expect(response_message[:message]).to eq(["Error: required parameter 'residence_type' is missing."])
         end
         
@@ -50,7 +48,7 @@ RSpec.describe "Utilities controller", type: :request do
 
       end
 
-      #Unable to connect to external APIs
+      #Unable to connect to external APIs / get data (404 response or similar)
       
       #Maybe: external API and/or PORO / other BE processing yields strange data
 
