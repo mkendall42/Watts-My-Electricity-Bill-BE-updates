@@ -1,5 +1,6 @@
 class EnergyInfo
   #Santizes / standardizes external API data, and provides calculations/functionality
+  attr_reader :residence_name, :energy_consumption, :cost
 
   def initialize(user_search_data)
     #Assume very simple clean structure for now.  THIS WILL CHANGE LATER.
