@@ -8,4 +8,12 @@ class ErrorSerializer
     }
   end
 
+  def self.format_user_error(message, status_code)
+    #This probably could just be combined with above (and rename them to be common)
+    {
+      status: status_code,
+      message: message
+    }
+  end
+
 end

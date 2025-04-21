@@ -64,7 +64,15 @@ RSpec.describe "Users controller", type: :request do
     end
 
     context "sad paths" do
+      it "invalid ID yields appropriate error" do
+        invalid_id = 10000
+        get api_v1_user_path(invalid_id)
+        error_message = JSON.parse(response.body, symbolize_names: true)
 
+        expect(response).to_not be_successful
+        expect(error_message[:status]).to eq(404)
+        expect(error_message[:message]).to eq("Error: Couldn't find User with 'id'=#{invalid_id}.")
+      end
     end
   end
 
