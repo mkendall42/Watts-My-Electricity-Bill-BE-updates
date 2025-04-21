@@ -16,7 +16,7 @@ Add later: will have some for requests/, models/, and more (maybe POROs, gateway
 
 This API exposes the following endpoints.  Note: these will be updated as additional functionality appears (including variable / JSON text at times).  These are only for usage by the frontend.
 
-### Get utility rates, energy and money costs
+### Utilities: Get utility rates, energy and money costs
 
 Make a request for utility (electricity) rates / data, which is acquired from external API(s), massaged / calculated, and returned.
 
@@ -44,5 +44,35 @@ Make a request for utility (electricity) rates / data, which is acquired from ex
         ```
         Notes: `nickname` should echo what the user entered; this is a simple additional confirmation / verification.  `energy_consumption` is measured by default in kWh and is annual (1 year).  `cost` is in dollars ($), and also annual.  LATER (after MVP, most likely): can return additional information, like more detailed location information, utility company / other factors, even carbon footprint, etc.
     - Additional notes: for now, this should only return one result.  Later, or if multiple utility companies exist in the area, it might return an array (like `{ [ <JSON> ] }`), but this would be post-MVP.
+
+### Users: Get single user information
+
+Request an individual user's information (likely used by FE to display user's saved reports, primarily).
+
+- `GET /api/v1/users/:id`.  As usual, `:id` is the ID of the user of interest.
+- Response structure:
+    - Status:
+        1. 200 - successful, standard JSON (stucture shown below).
+        2. 404 - ID invalid / does not exist in database.
+    - Body: returns JSON data.  Typical structure:
+        ```
+        {
+            username: <string>,
+            num_reports: <integer>,
+            reports: [
+                {
+                    nickname: <string>,
+                    id: <integer>
+                },
+                {
+                    nickname: <string>,
+                    id: <integer>
+                },
+                ...
+            ]
+        }
+        ```
+- Notes: for now, the `reports` field will only return the nicknames and IDs of all the reports belonging to that user.  The FE can then use these to individually look up details on each report (for displaying on site) by calling the relevant #show action / request in the ReportsController.  Later / if desired, we could add logic to have the user info return all of these details in the array so there is only one call.  Also note that if the user has no reports, `num_reports` will equal 0, and `reports` will be an empty array to be consistent.
+
 
 
