@@ -19,6 +19,8 @@ class Api::V1::ReportsController < ApplicationController
     if report.save
       UserReport.create!(user_id: report_params[:user_id], report_id: report.id)
       render json: report, status: :created
+    else
+      render json: { errors: report.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
