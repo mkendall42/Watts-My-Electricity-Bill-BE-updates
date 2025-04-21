@@ -1,18 +1,16 @@
 class Api::V1::ReportsController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
 
   def index
     user = User.find(params[:user_id])
     reports = user.reports
     render json: reports
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: "User not found" }, status: :not_found
   end
 
   def show
     report = Report.find(params[:id])
     render json: report
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: "Report not found" }, status: :not_found
   end
 
   def create
@@ -39,5 +37,13 @@ class Api::V1::ReportsController < ApplicationController
 
   def report_params
     params.permit(:user_id, :nickname, :energy_usage, :energy_cost)
+  end
+
+  def record_not_found(exception)
+    render json: { error: exception.message }, status: :not_found
+  end
+
+  def record_invalid(exception)
+    render json: { error: exception.record.errors.full_messages }, status: :unprocessable_entity
   end
 end
