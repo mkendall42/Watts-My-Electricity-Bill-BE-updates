@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :utilities, only: :index
-
-      #NOTE: will need other routes here (maybe more for utlities, and definitely for users, reports, etc.)
+      resources :users, only: [:show]
+      #NOTE: will need other routes here (more for reports and users, and maybe more for utiltiies)
     end
   end
 
