@@ -21,3 +21,4 @@ class Api::V1::UsersController < ApplicationController
     render json: ErrorSerializer.format_user_error("Error: #{exception.message}.", 404), status: 404
   end
 end
+
