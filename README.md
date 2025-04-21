@@ -72,7 +72,20 @@ Request an individual user's information (likely used by FE to display user's sa
             ]
         }
         ```
+        For an error, typical structure is:
+        ```
+        {
+            status: 404,
+            message: <string - ActiveRecord exception>
+        }
+        ```
 - Notes: for now, the `reports` field will only return the nicknames and IDs of all the reports belonging to that user.  The FE can then use these to individually look up details on each report (for displaying on site) by calling the relevant #show action / request in the ReportsController.  Later / if desired, we could add logic to have the user info return all of these details in the array so there is only one call.  Also note that if the user has no reports, `num_reports` will equal 0, and `reports` will be an empty array to be consistent.
+
+### Users: Get all users (index)
+
+### Users: Create new user
+
+### Users: Delete user (do we even need this?)
 
 
 
