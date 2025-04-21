@@ -12,6 +12,7 @@ class Api::V1::UsersController < ApplicationController
     user = User.find(params[:id])
 
     #Render information via serializer
-    render json: { user_id: user.id, message: "well howdy there" }
+    # render json: { user_id: user.id, message: "well howdy there" }
+    render json: UsersSerializer.format_single_user(user)
   end
 end
