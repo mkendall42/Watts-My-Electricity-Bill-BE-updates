@@ -27,14 +27,13 @@ Make a request for utility (electricity) rates / data, which is acquired from ex
     - `residence_type` (type or 'class' of residence; for now simply `"apartment"` or `"house"`)
     - `num_residents` (number of residents living there)
     - `efficiency_level` (degree to which resident tries to save energy; for now simply 1 (efficient) or 2 (comfort) - later can be an index value or even float)
-    - `username` \[optional\] (if report should be saved under a new user)
 
 - Response structure:
     - Status:
         1. 200 - successful, standard JSON (see below)
         2. 404 - failure, resource not found (likely external API failure)
-        3. 422 - problem with parameters / misc issue
-    - Body: returns JSON data.  Typical structure:
+        3. 422 - problem with parameters / misc issue (note: parameters are now validated, and error have an array of messages for each failed parameter)
+    - Body: returns JSON data.  Typical structure (NOTE - may return more later, see below):
         ```
         {
             nickname: <string>
@@ -43,7 +42,9 @@ Make a request for utility (electricity) rates / data, which is acquired from ex
         }
         ```
         Notes: `nickname` should echo what the user entered; this is a simple additional confirmation / verification.  `energy_consumption` is measured by default in kWh and is annual (1 year).  `cost` is in dollars ($), and also annual.  LATER (after MVP, most likely): can return additional information, like more detailed location information, utility company / other factors, even carbon footprint, etc.
-    - Additional notes: for now, this should only return one result.  Later, or if multiple utility companies exist in the area, it might return an array (like `{ [ <JSON> ] }`), but this would be post-MVP.
+    - Additional notes:
+        1. For now, this should only return one result.  Later, or if multiple utility companies exist in the area, it might return an array (like `{ [ <JSON> ] }`), but this would be post-MVP.
+        2. We may wish to return state-level average energy cost rates so a user can compare them.  In this case, the JSON response could have the key-value pair `average_state_rate: <float>` or similar.
 
 ### Users: Get single user information
 
@@ -81,15 +82,10 @@ Request an individual user's information (likely used by FE to display user's sa
         ```
 - Notes: for now, the `reports` field will only return the nicknames and IDs of all the reports belonging to that user.  The FE can then use these to individually look up details on each report (for displaying on site) by calling the relevant #show action / request in the ReportsController.  Later / if desired, we could add logic to have the user info return all of these details in the array so there is only one call.  Also note that if the user has no reports, `num_reports` will equal 0, and `reports` will be an empty array to be consistent.
 
-### Users: Get all users (index)
+### Users: Get all users (index) -> still needs implementing
 
-### Users: Create new user
+### Reports: Get all reports (index)
 
-### Users: Delete user (do we even need this?)
+### Reports: Get single report details
 
-
-
-<<<<<<< HEAD
-* ...
-=======
->>>>>>> d41901c5121eb8a9464748b4f4f791c24b085bd9
+### Reports: Create new report
