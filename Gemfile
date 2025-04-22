@@ -42,6 +42,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   gem "pry"
   gem "rspec-rails"
+  gem 'rack-cors'
 end
 
 group :development do
