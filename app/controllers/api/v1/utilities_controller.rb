@@ -8,7 +8,7 @@ class Api::V1::UtilitiesController < ApplicationController
       render json: ErrorSerializer.format_params_error(messages, 422), status: :unprocessable_content
     else
       #Generate energy information based on API calls via gateways, sanitizing data, and running calculations:
-      residence_data = EnergyInfo.analyze_energy_and_cost(params.permit(:nickname, :latitude, :longitude, :residence_type, :num_residents, :efficiency_level, :username))
+      residence_data = EnergyInfo.analyze_energy_and_cost(params.permit(:nickname, :latitude, :longitude, :residence_type, :num_residents, :efficiency_level))
   
       #Process anything necessary / calculations, then serialize and return JSON to FE.
       render json: UtilitiesSerializer.format_energy_data(residence_data)
