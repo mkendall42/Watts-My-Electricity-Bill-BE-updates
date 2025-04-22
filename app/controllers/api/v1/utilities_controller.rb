@@ -33,7 +33,16 @@ class Api::V1::UtilitiesController < ApplicationController
 
     #Also check data ranges are valid (could move to Rails 'validate' if we add this to DB later)
     # check_lat_long(params[:latitude], params[:longitude])
-
+    
+    #Check nickname is unique
+    # result = Report.is_unique_nickname?(params[:nickname])
+    messages2 = []
+    messages2 << "Error: nickname must be unique." if !Report.is_unique_nickname?(params[:nickname])
+    messages2 << "Error: latitude/longitude values must be legal." if !(params[:latitude].to_i > -90 && params[:latitude].to_i < 90 && params[:longitude].to_i > -180 && params[:longitude].to_i < 180)
+    messages2 << "Error: residence type must be 'apartment' or 'house'." if !["apartment", "house"].include?(params[:residence_type])
+    messages2 << "Error: number of residents must be an integer > 0." if !(params[:num_residents].to_i > 0)
+    messages2 << "Error: efficiency level must be 1 or 2." if ![1, 2].include?(params[:efficiency_level].to_i)
+    
     return messages
   end
 end

@@ -36,7 +36,7 @@ class EnergyInfo
   #Here are a few planned methods laid out for future implementation...
 
   #Sanitize / store data based on CSV file data pull and EIA API call response
-
+  #NOTE: this could be done in the facade for API call / CSV consumption
   
   #Estimate / calculate energy consumption
 

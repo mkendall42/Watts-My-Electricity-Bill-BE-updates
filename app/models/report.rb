@@ -5,4 +5,8 @@ class Report < ApplicationRecord
   validates :nickname, presence: true
   validates :energy_usage, presence: true
   validates :energy_cost, presence: true
+
+  def self.is_unique_nickname?(text)
+    !Report.find_by(nickname: text)
+  end
 end
