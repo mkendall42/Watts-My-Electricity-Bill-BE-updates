@@ -1,6 +1,9 @@
 class EnergyInfo
   #Santizes / standardizes external API data, and provides calculations/functionality
-  attr_reader :residence_name, :energy_consumption, :cost
+  #NOTE: will need to decide if state average data is handled here, or by a separate model / PORO
+
+  attr_reader :residence_name, :energy_consumption, :cost, :residence_type,
+            :efficiency_index, :coordinates, :num_residents
 
   def initialize(user_search_data)
     #Assume very simple clean structure for now.  THIS WILL CHANGE LATER.
@@ -29,5 +32,14 @@ class EnergyInfo
     #Maybe move controller verification into here?
 
   end
+
+  #Here are a few planned methods laid out for future implementation...
+
+  #Sanitize / store data based on CSV file data pull and EIA API call response
+
+  
+  #Estimate / calculate energy consumption
+
+  #Calculate electricity cost based on determined rate (and perhaps return two values)
 
 end
