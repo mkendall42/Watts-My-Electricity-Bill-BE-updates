@@ -45,7 +45,7 @@ RSpec.describe "Utilities controller", type: :request do
         end
         
         it "all parameters are invalid / out of range" do
-          #Since error messages are generated separately, this covers all bases
+          #Since error messages are generated separately, this covers all bases in essence
           Report.create!(nickname: "newplace", energy_usage: 1000, energy_cost: 711)
           get "#{api_v1_utilities_path}?nickname=newplace&latitude=-19&longitude=210&residence_type=shack&num_residents=-1&efficiency_level=4"
           response_message = JSON.parse(response.body, symbolize_names: true)

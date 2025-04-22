@@ -7,11 +7,8 @@ class Api::V1::UtilitiesController < ApplicationController
     if (messages = validate_params(params)) != []
       render json: ErrorSerializer.format_params_error(messages, 422), status: :unprocessable_content
     else
-      #Hand off to gateway / Farady to make external API call(s) (later ticket)
-  
-      #Once external API has responded, parse raw data and massage / store into object (PORO likely?)
-      #NOTE: for starters, just mock returned basic data to render
-      residence_data = EnergyInfo.new(params.permit(:nickname, :latitude, :longitude, :residence_type, :num_residents, :efficiency_level, :username))
+      #Generate energy information based on API calls via gateways, sanitizing data, and running calculations:
+      residence_data = EnergyInfo.analyze_energy_and_cost(params.permit(:nickname, :latitude, :longitude, :residence_type, :num_residents, :efficiency_level, :username))
   
       #Process anything necessary / calculations, then serialize and return JSON to FE.
       render json: UtilitiesSerializer.format_energy_data(residence_data)
@@ -21,9 +18,7 @@ class Api::V1::UtilitiesController < ApplicationController
   private
 
   def validate_params(params)
-    #This is in the controller for now, since it makes sense to validate parameters BEFORE creating an object.
-    #Alternately, this could exist within EnergyInfo I suppose...
-
+    #This is in the controller since it makes sense to validate params BEFORE creating an EnergyInfo object and running API calls
     #Returns empty array if ok (params good), nonempty array if error(s)
     messages = []
     required_params = [:nickname, :latitude, :longitude, :residence_type, :num_residents, :efficiency_level]

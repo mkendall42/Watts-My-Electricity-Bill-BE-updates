@@ -1,12 +1,12 @@
 class EnergyInfo
-  #Santizes / standardizes external API data, and provides calculations/functionality
-  #NOTE: will need to decide if state average data is handled here, or by a separate model / PORO
+  #Standardizes external API data, and provides calculations/functionality
+  #NOTE: will need to decide if state average data is handled here, or by a separate model and DB / PORO
 
   attr_reader :residence_name, :energy_consumption, :cost, :residence_type,
             :efficiency_index, :coordinates, :num_residents
 
   def initialize(user_search_data)
-    #Assume very simple clean structure for now.  THIS WILL CHANGE LATER.
+    #Assume very simple clean structure for now.  THIS MIGHT CHANGE LATER.
     @residence_name = user_search_data[:nickname]
     @residence_type = user_search_data[:residence_type]
     @num_residents = user_search_data[:num_residents]
@@ -15,31 +15,41 @@ class EnergyInfo
       latitude: user_search_data[:latitude],
       longitude: user_search_data[:longitude]
     }
-    @zip_code = 0         #Determine/associate later (API call - might be outside MVP too)
-
     #Set to dummy values for now.  WILL CHANGE LATER.
+    @zip_code = nil             #Determine/associate later (API call - might be outside MVP too)
+    @state = nil                #Alternate: have it in a DB table for lookup
+    @average_state_rate = nil   #ALternate: same
     @rate = nil
     @energy_consumption = 2500
     @cost = 380
+  end
 
-    #NOTE: calculate energy consumption later, AFTER the API call is complete
-    #(this will also update some instance vars, like commented below for reminders)
-    # @rate = api_response_json[:rate]
-    # @energy_consumption = calculate_energy()
-    # @cost = @rate * @energy_consumption
+  def self.analyze_energy_and_cost(user_search_data)
+    #Returns EnergyInfo object will fully sanitized and calculated data, ready for rendering/other
 
-    #If any core parameter is missing, will need to check / raise exception or error
-    #Maybe move controller verification into here?
+    #Latitude/longitude/zip code/state API call (geocoding) via gateway
+    #CSV utility rate lookup
+    #EIA state average utility rate API call via gateway
+    #Create new residence object based on these data
+    residence_data = self.new(user_search_data)
+    #Update residence_data instance vars based on API call responses (facade / other sanitizing method(s))
+    #Calculate energy consumption and cost based on all the above (dummy values and empty methods for now, can implement near the very end of project)
+    residence_data.calculate_energy_consumption
+    residence_data.calculate_cost
 
+    return residence_data
   end
 
   #Here are a few planned methods laid out for future implementation...
-
-  #Sanitize / store data based on CSV file data pull and EIA API call response
-  #NOTE: this could be done in the facade for API call / CSV consumption
   
-  #Estimate / calculate energy consumption
+  def calculate_energy_consumption
+    #Estimate / calculate energy consumption
 
-  #Calculate electricity cost based on determined rate (and perhaps return two values)
+  end
+  
+  def calculate_cost
+    #Calculate electricity cost based on determined rate (and perhaps return two values)
+
+  end
 
 end
