@@ -6,7 +6,4 @@ class CSV_Utility
     @res_rate = res_rate
   end
 
-  def self.zipcode_match(zip)
-    return self if self.zipcode == zip
-  end
 end
