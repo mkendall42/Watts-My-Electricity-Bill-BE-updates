@@ -21,9 +21,8 @@ This API exposes the following endpoints.  Note: these will be updated as additi
 Make a request for utility (electricity) rates / data, which is acquired from external API(s), massaged / calculated, and returned.
 
 - `GET /api/v1/utilities`. Expected parameters (i.e. passed as `?<params>`):
-    - `nickname` (unique name for report / property / planned establishment) 
-    - `latitude` (in degrees)
-    - `longitude` (in degrees)
+    - `nickname` (unique name for report / property / planned establishment)
+    - `zipcode` (zipcode of the user)
     - `residence_type` (type or 'class' of residence; for now simply `"apartment"` or `"house"`)
     - `num_residents` (number of residents living there)
     - `efficiency_level` (degree to which resident tries to save energy; for now simply 1 (efficient) or 2 (comfort) - later can be an index value or even float)
