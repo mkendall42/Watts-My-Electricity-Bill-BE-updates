@@ -11,7 +11,11 @@ class EiaGateway
       req.params['facets[stateid][]'] = state
     end
 
-    residential_response = JSON.parse(response.body, symbolize_names: true)
-    residential_response[:response][:data].find { |data| data[:sectorName] == "residential" }
+    full_response = JSON.parse(response.body, symbolize_names: true)
+    residential = full_response[:response][:data].find { |data| data[:sectorName] == "residential" }
+    industrial = full_response[:response][:data].find { |data| data[:sectorName] == "industrial" }
+    commercial = full_response[:response][:data].find { |data| data[:sectorName] == "commercial" }
+
+    UtilitiesSerializer.format_building_type(residential, industrial, commercial)
   end
 end
