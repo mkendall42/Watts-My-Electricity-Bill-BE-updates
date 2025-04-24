@@ -1,3 +1,4 @@
+require 'csv'
 class Api::V1::UtilitiesController < ApplicationController
   #For now, #index makes the most sense, since it would not be easy to know a utility ID in advance (i.e. for #show)
   #Later index might be useful for other queries (browse multiple possible utilities, etc.), or maybe even use #show, or #create for common searches, etc.
@@ -8,7 +9,8 @@ class Api::V1::UtilitiesController < ApplicationController
       render json: ErrorSerializer.format_params_error(messages, 422), status: :unprocessable_content
     else
       #Generate energy information based on API calls via gateways, sanitizing data, and running calculations:
-      residence_data = EnergyInfo.analyze_energy_and_cost(params.permit(:nickname, :latitude, :longitude, :residence_type, :num_residents, :efficiency_level))
+      CsvHelper.utilityCSV("./db/data/iou_zipcodes_2023.csv")
+      residence_data = EnergyInfo.analyze_energy_and_cost(params.permit(:nickname, :zipcode, :residence_type, :num_residents, :efficiency_level))
   
       #Process anything necessary / calculations, then serialize and return JSON to FE.
       render json: UtilitiesSerializer.format_energy_data(residence_data)
@@ -21,7 +23,7 @@ class Api::V1::UtilitiesController < ApplicationController
     #This is in the controller since it makes sense to validate params BEFORE creating an EnergyInfo object and running API calls
     #Returns empty array if ok (params good), nonempty array if error(s)
     messages = []
-    required_params = [:nickname, :latitude, :longitude, :residence_type, :num_residents, :efficiency_level]
+    required_params = [:nickname, :zipcode, :residence_type, :num_residents, :efficiency_level]
     required_params.each do |required_param|
       messages << "Error: required parameter '#{required_param}' is missing." if !params[required_param].present?
     end
@@ -30,7 +32,7 @@ class Api::V1::UtilitiesController < ApplicationController
 
     #Validate incoming parameters appropriately
     messages << "Error: nickname must be unique." if !Report.is_unique_nickname?(params[:nickname])
-    messages << "Error: latitude/longitude values must be legal." if !(params[:latitude].to_i > -90 && params[:latitude].to_i < 90 && params[:longitude].to_i > -180 && params[:longitude].to_i < 180)
+    # messages << "Error: latitude/longitude values must be legal." if !(params[:latitude].to_i > -90 && params[:latitude].to_i < 90 && params[:longitude].to_i > -180 && params[:longitude].to_i < 180)
     messages << "Error: residence type must be 'apartment' or 'house'." if !["apartment", "house"].include?(params[:residence_type])
     messages << "Error: number of residents must be an integer > 0." if !(params[:num_residents].to_i > 0)
     messages << "Error: efficiency level must be 1 or 2." if ![1, 2].include?(params[:efficiency_level].to_i)

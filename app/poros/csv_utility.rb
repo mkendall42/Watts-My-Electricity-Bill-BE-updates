@@ -1,4 +1,4 @@
-class CSV_Utility
+class CsvUtility
   attr_reader :zipcode, :state, :res_rate
   def initialize(zipcode, state, res_rate)
     @zipcode = zipcode

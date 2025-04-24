@@ -45,6 +45,7 @@ group :development, :test do
   gem "pry"
   gem "rspec-rails"
   gem 'rack-cors'
+  gem 'csv'
 end
 
 group :development do
