@@ -33,11 +33,20 @@ Make a request for utility (electricity) rates / data, which is acquired from ex
         2. 404 - failure, resource not found (likely external API failure)
         3. 422 - problem with parameters / misc issue (note: parameters are now validated, and error have an array of messages for each failed parameter)
     - Body: returns JSON data.  Typical structure (NOTE - may return more later, see below):
-        ```
         {
-            nickname: <string>
-            energy_consumption: <float>,
-            cost: <float>
+            "nickname": (string) name of place,
+            "energy_consumption": (float) energy consumption,
+            "state": (string) state from the zipcode,
+            "state_average": {
+                "residential": (float) residential rate for month,
+                "industrial":(float) industrial rate for month,
+                "commercial": (float) commercial rate for month 
+            },
+            "zip_average": {
+                "residential": (float) 0.14335370009863208,
+                "industrial": (float) 0.08032814635818483,
+                "commercial": (float) 0.11750181035317799
+            }
         }
         ```
         Notes: `nickname` should echo what the user entered; this is a simple additional confirmation / verification.  `energy_consumption` is measured by default in kWh and is annual (1 year).  `cost` is in dollars ($), and also annual.  LATER (after MVP, most likely): can return additional information, like more detailed location information, utility company / other factors, even carbon footprint, etc.
@@ -83,7 +92,7 @@ Request an individual user's information (likely used by FE to display user's sa
 
 ### Users: Get all users (index)
 /api/v1/users to: /api/v1/users#index
- - This route will get all users in the database.
+  - This route will get all users in the database.
 
 ### Reports: Get all reports (index)
 
