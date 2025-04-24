@@ -36,16 +36,16 @@ Make a request for utility (electricity) rates / data, which is acquired from ex
         {
             "nickname": (string) name of place,
             "energy_consumption": (float) energy consumption,
-            "state": (string) state from the zipcode,
+            "state": (string) state of the zipcode,
             "state_average": {
                 "residential": (float) residential rate for month,
                 "industrial":(float) industrial rate for month,
                 "commercial": (float) commercial rate for month 
             },
             "zip_average": {
-                "residential": (float) 0.14335370009863208,
-                "industrial": (float) 0.08032814635818483,
-                "commercial": (float) 0.11750181035317799
+                "residential": (float),
+                "industrial": (float),
+                "commercial": (float) 
             }
         }
         ```
