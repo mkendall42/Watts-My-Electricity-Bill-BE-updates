@@ -3,17 +3,17 @@ class UtilitiesSerializer
     # this serializer might need slight alterations when we do the monthly calculations
     {
       nickname: data.residence_name,
-      energy_consumption: data.energy_consumption,
+      energy_consumption: data.energy_consumption.to_f,
       state: data.state,
       state_average: {
-        residential: data.state_res_average[:price],
-        industrial: data.state_ind_average[:price],
-        commercial: data.state_comm_average[:price]
+        residential: data.state_res_average[:price].to_f,
+        industrial: data.state_ind_average[:price].to_f,
+        commercial: data.state_comm_average[:price].to_f
       },
       zip_average: {
-        residential: data.zip_res_rate,
-        industrial: data.zip_ind_rate,
-        commercial: data.zip_comm_rate
+        residential: data.zip_res_rate.to_f,
+        industrial: data.zip_ind_rate.to_f,
+        commercial: data.zip_comm_rate.to_f
       }
     }
   end
