@@ -7,6 +7,11 @@ class Api::V1::UsersController < ApplicationController
   # - update (add report to existing user...other things too?)
   # - destroy (optional, if we want to have this at all)
 
+  def index
+    users = User.all
+    render json: UsersSerializer.format_users(users)
+  end
+
   def show
     #Return info about user, including saved reports (residences / searches) with basic (but not complete) info
     user = User.find(params[:id])
