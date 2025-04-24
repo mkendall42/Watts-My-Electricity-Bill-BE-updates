@@ -33,11 +33,20 @@ Make a request for utility (electricity) rates / data, which is acquired from ex
         2. 404 - failure, resource not found (likely external API failure)
         3. 422 - problem with parameters / misc issue (note: parameters are now validated, and error have an array of messages for each failed parameter)
     - Body: returns JSON data.  Typical structure (NOTE - may return more later, see below):
-        ```
         {
-            nickname: <string>
-            energy_consumption: <float>,
-            cost: <float>
+            "nickname": (string) name of place,
+            "energy_consumption": (float) energy consumption,
+            "state": (string) state of the zipcode,
+            "state_average": {
+                "residential": (float) residential rate for month,
+                "industrial":(float) industrial rate for month,
+                "commercial": (float) commercial rate for month 
+            },
+            "zip_average": {
+                "residential": (float),
+                "industrial": (float),
+                "commercial": (float) 
+            }
         }
         ```
         Notes: `nickname` should echo what the user entered; this is a simple additional confirmation / verification.  `energy_consumption` is measured by default in kWh and is annual (1 year).  `cost` is in dollars ($), and also annual.  LATER (after MVP, most likely): can return additional information, like more detailed location information, utility company / other factors, even carbon footprint, etc.
@@ -81,7 +90,9 @@ Request an individual user's information (likely used by FE to display user's sa
         ```
 - Notes: for now, the `reports` field will only return the nicknames and IDs of all the reports belonging to that user.  The FE can then use these to individually look up details on each report (for displaying on site) by calling the relevant #show action / request in the ReportsController.  Later / if desired, we could add logic to have the user info return all of these details in the array so there is only one call.  Also note that if the user has no reports, `num_reports` will equal 0, and `reports` will be an empty array to be consistent.
 
-### Users: Get all users (index) -> still needs implementing
+### Users: Get all users (index)
+/api/v1/users to: /api/v1/users#index
+  - This route will get all users in the database.
 
 ### Reports: Get all reports (index)
 

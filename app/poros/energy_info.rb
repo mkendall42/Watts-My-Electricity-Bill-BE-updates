@@ -2,9 +2,14 @@ class EnergyInfo
   #Standardizes external API data, and provides calculations/functionality
   #NOTE: will need to decide if state average data is handled here, or by a separate model and DB / PORO
 
-  attr_reader :residence_name, :energy_consumption, :cost, :residence_type,
-            :efficiency_index, :coordinates, :num_residents,
-            :zip_code
+  attr_reader :residence_name, :state, :energy_consumption, :cost, :residence_type,
+              :efficiency_index, :coordinates, :num_residents,
+              :zip_code, :zip_res_rate, :zip_ind_rate, :zip_comm_rate,
+              :state_ind_rate, :state_ind_average, :state_comm_average,
+              :average_state_rate, :state_res_average 
+  attr_writer :zip_res_rate, :zip_ind_rate, :zip_comm_rate,
+              :state, :state_res_average, :state_ind_average, :state_comm_average,
+              :average_state_rate
 
   def initialize(user_search_data)
     #Assume very simple clean structure for now.  THIS MIGHT CHANGE LATER.
@@ -16,7 +21,12 @@ class EnergyInfo
     #Set to dummy values for now.  WILL CHANGE LATER.
     @state = nil                #Alternate: have it in a DB table for lookup
     @average_state_rate = nil   #ALternate: same
-    @rate = nil
+    @zip_res_rate = nil
+    @zip_ind_rate = nil
+    @zip_comm_rate = nil
+    @state_res_average = nil
+    @state_ind_average = nil
+    @state_comm_average = nil
     @energy_consumption = 2500
     @cost = 380
   end
@@ -25,11 +35,17 @@ class EnergyInfo
     #Returns EnergyInfo object will fully sanitized and calculated data, ready for rendering/other
     
     residence_data = self.new(user_search_data)
-    @rate = CsvHelper.price_by_zip(residence_data.zip_code)
-    @state = CsvHelper.state_by_zip(residence_data.zip_code)
-    # state_price = CsvHelper.state_by_zip(@state)
-    eia_reports = EiaGateway.report_details(@state)
-    @average_state_rate = eia_reports[:price]
+    rate = CsvHelper.price_by_zip(residence_data.zip_code)
+
+    residence_data.zip_res_rate = rate[:residential]
+    residence_data.zip_ind_rate = rate[:industrial]
+    residence_data.zip_comm_rate = rate[:commercial]
+    residence_data.state = CsvHelper.state_by_zip(residence_data.zip_code)
+    eia_reports = EiaGateway.report_details(residence_data.state)
+    residence_data.state_res_average = eia_reports[:residential]
+    residence_data.state_ind_average = eia_reports[:industrial]
+    residence_data.state_comm_average = eia_reports[:commercial]
+
     #Latitude/longitude/zip code/state API call (geocoding) via gateway
     #CSV utility rate lookup
     #EIA state average utility rate API call via gateway

@@ -5,7 +5,7 @@ RSpec.describe "Utilities controller", type: :request do
     context "happy paths" do
       #One example (simple) - basic mocked/stubbed external API call to one location
       it "basic successful test" do
-        get "#{api_v1_utilities_path}?nickname=apt&latitude=-19&longitude=-133&residence_type=apartment&num_residents=2&efficiency_level=1"
+        get "#{api_v1_utilities_path}?nickname=apt&zipcode=80236&residence_type=apartment&num_residents=2&efficiency_level=1"
         utility_info = JSON.parse(response.body, symbolize_names: true)
 
         expect(response).to be_successful
