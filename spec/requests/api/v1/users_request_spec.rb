@@ -77,6 +77,17 @@ RSpec.describe "Users controller", type: :request do
   end
 
   #index
+  describe "#index" do
+    it "returns all users" do
+      get "/api/v1/users"
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json.count).to eq(5)
+      expect(json[0][:username]). to eq("jbickler")
+    end
+  end
 
   #update?
 
