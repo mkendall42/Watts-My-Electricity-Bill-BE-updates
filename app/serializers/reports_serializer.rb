@@ -3,7 +3,7 @@ class ReportsSerializer
     {
       nickname: report.nickname,
       energy_consumption: report.energy_consumption.to_f,
-      energy_cost: report.energy_cost.to_f,
+      cost: report.energy_cost.to_f,
       state: report.state,
       state_average: {
         residential: report.state_residential_avg,
