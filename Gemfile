@@ -44,7 +44,6 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   gem "pry"
   gem "rspec-rails"
-  gem 'rack-cors'
   gem 'csv'
 end
 
@@ -59,3 +58,4 @@ group :test do
   gem "shoulda-matchers"
   gem "simplecov"
 end
+gem 'rack-cors'
