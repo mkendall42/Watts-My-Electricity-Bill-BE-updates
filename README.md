@@ -106,7 +106,7 @@ POST /api/v1/reports?<params> to: /api/v1/reports#create
 params: 
     nickname: string,
     energy_consumption: float,
-    energy_cost: float,
+    cost: float,
     state: string,
     state_residential_avg: float,
     state_industrial_avg: float,
