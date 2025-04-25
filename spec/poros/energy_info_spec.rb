@@ -96,4 +96,20 @@ RSpec.describe "EnergyInfo object (non-model)" do
     end
   end
 
+  describe "calculate_energy_consumption" do
+    it "can calculate consumed energy and return a number" do
+      CsvHelper.utilityCSV("./db/data/iou_zipcodes_2023.csv")
+      apartment_data = {
+        nickname: "quiet apartment",
+        zipcode: 80401,
+        residence_type: "apartment",
+        num_residents: 1,
+        efficiency_level: 1
+      }
+      efficient_apartment = EnergyInfo.new(apartment_data)
+
+      expect(efficient_apartment.calculate_energy_consumption).to eq(2500.0)
+    end
+  end
+
 end
