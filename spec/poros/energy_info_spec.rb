@@ -11,8 +11,7 @@ RSpec.describe "EnergyInfo object (non-model)" do
           residence_type: "apartment",         #Not really, but need valid data
           num_residents: 2,
           efficiency_level: 1,
-          latitude: 41.9,
-          longitude: -91.5
+          zipcode: 80236
         }
 
         energy_info = EnergyInfo.new(search_data)
@@ -22,8 +21,8 @@ RSpec.describe "EnergyInfo object (non-model)" do
         expect(energy_info.residence_type).to eq("apartment")
         expect(energy_info.num_residents).to eq(2)
         expect(energy_info.efficiency_index).to eq(1)
-        expect(energy_info.coordinates[:latitude]).to eq(41.9)
-        expect(energy_info.coordinates[:longitude]).to eq(-91.5)
+        expect(energy_info.zip_code).to eq(80236)
+
       end
 
       #Check analyze_energy_and_cost() method (once external APIs exist and data can be stubbed)
@@ -35,6 +34,80 @@ RSpec.describe "EnergyInfo object (non-model)" do
 
       #Maybe: return null or raise error if calculation problem (might not need this, can't think of when this would happen if all data comes back correctly...)
 
+    end
+  end
+
+  describe "energy consumption and cost calculations" do
+    it "successfully computes two residences, generates reasonable answers" do
+      #Basic apartment first
+      apartment_data = {
+        nickname: "quiet apartment",
+        zipcode: 12345,
+        residence_type: "apartment",
+        num_residents: 1,
+        efficiency_level: 1
+      }
+      efficient_apartment = EnergyInfo.new(apartment_data)
+      efficient_apartment.zip_res_rate = 0.12
+
+      efficient_apartment.calculate_energy_consumption
+      efficient_apartment.calculate_cost
+
+      expect(efficient_apartment.energy_consumption).to be_a(Float)
+      expect(efficient_apartment.energy_consumption).to eq(2500)
+      expect(efficient_apartment.cost).to be_a(Float)
+      expect(efficient_apartment.cost).to eq(420)
+
+      #Now a busy house
+      house_data = {
+        nickname: "busy electricity guzzling house",
+        zipcode: 12345,
+        residence_type: "house",
+        num_residents: 5,
+        efficiency_level: 2
+      }
+      busy_house = EnergyInfo.new(house_data)
+      busy_house.zip_res_rate = 0.12
+
+      busy_house.calculate_energy_consumption
+      busy_house.calculate_cost
+
+      expect(busy_house.energy_consumption).to be_a(Float)
+      expect(busy_house.energy_consumption.round(1)).to eq(32831.6)
+      expect(busy_house.cost).to be_a(Float)
+      expect(busy_house.cost.round(1)).to eq(5515.7)
+    end
+  end
+
+  describe "analyze_energy_and_cost" do
+    it "returns a calculated and sanitized residence_data file" do
+      CsvHelper.utilityCSV("./db/data/iou_zipcodes_2023.csv")
+      
+      apartment_data = {
+        nickname: "quiet apartment",
+        zipcode: 80401,
+        residence_type: "apartment",
+        num_residents: 1,
+        efficiency_level: 1
+      }
+
+      analysis = EnergyInfo.analyze_energy_and_cost(apartment_data)
+    end
+  end
+
+  describe "calculate_energy_consumption" do
+    it "can calculate consumed energy and return a number" do
+      CsvHelper.utilityCSV("./db/data/iou_zipcodes_2023.csv")
+      apartment_data = {
+        nickname: "quiet apartment",
+        zipcode: 80401,
+        residence_type: "apartment",
+        num_residents: 1,
+        efficiency_level: 1
+      }
+      efficient_apartment = EnergyInfo.new(apartment_data)
+
+      expect(efficient_apartment.calculate_energy_consumption).to eq(2500.0)
     end
   end
 

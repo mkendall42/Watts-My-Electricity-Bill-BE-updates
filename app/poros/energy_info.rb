@@ -35,12 +35,13 @@ class EnergyInfo
     #Returns EnergyInfo object will fully sanitized and calculated data, ready for rendering/other
     
     residence_data = self.new(user_search_data)
+    # binding.pry
+    residence_data.state = CsvHelper.state_by_zip(residence_data.zip_code)
     rate = CsvHelper.price_by_zip(residence_data.zip_code)
 
     residence_data.zip_res_rate = rate[:residential]
     residence_data.zip_ind_rate = rate[:industrial]
     residence_data.zip_comm_rate = rate[:commercial]
-    residence_data.state = CsvHelper.state_by_zip(residence_data.zip_code)
     eia_reports = EiaGateway.report_details(residence_data.state)
     residence_data.state_res_average = eia_reports[:residential]
     residence_data.state_ind_average = eia_reports[:industrial]
@@ -61,12 +62,22 @@ class EnergyInfo
   
   def calculate_energy_consumption
     #Estimate / calculate energy consumption
+    #efficiency_index needs updating later (once it can be a larger range)
+    #Use type of accomodation, number of occupants, energy efficiency
+    coefficients = {
+      #Add more for other residence types
+      apartment: 1,
+      house: 2.5
+    }
 
+    @energy_consumption = 2500 * coefficients[@residence_type.to_sym] * (@num_residents.to_f ** 0.6) * @efficiency_index.to_f
   end
   
   def calculate_cost
     #Calculate electricity cost based on determined rate (and perhaps return two values)
+    fees_factor = 1.4
 
+    @cost = @energy_consumption * @zip_res_rate.to_f * fees_factor
   end
 
 end

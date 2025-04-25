@@ -91,11 +91,27 @@ Request an individual user's information (likely used by FE to display user's sa
 - Notes: for now, the `reports` field will only return the nicknames and IDs of all the reports belonging to that user.  The FE can then use these to individually look up details on each report (for displaying on site) by calling the relevant #show action / request in the ReportsController.  Later / if desired, we could add logic to have the user info return all of these details in the array so there is only one call.  Also note that if the user has no reports, `num_reports` will equal 0, and `reports` will be an empty array to be consistent.
 
 ### Users: Get all users (index)
-/api/v1/users to: /api/v1/users#index
+GET /api/v1/users to: /api/v1/users#index
   - This route will get all users in the database.
 
 ### Reports: Get all reports (index)
 
 ### Reports: Get single report details
+GET /api/v1/reports/:id to: /api/v1/reports#show
 
 ### Reports: Create new report
+POST /api/v1/reports?<params> to: /api/v1/reports#create
+
+```
+params: 
+    nickname: string,
+    energy_consumption: float,
+    energy_cost: float,
+    state: string,
+    state_residential_avg: float,
+    state_industrial_avg: float,
+    state_commercial_avg: float,
+    zip_residential_avg: float,
+    zip_industrial_avg: float,
+    zip_commercial_avg: float,
+```
