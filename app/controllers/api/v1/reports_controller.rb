@@ -10,7 +10,7 @@ class Api::V1::ReportsController < ApplicationController
 
   def show
     report = Report.find(params[:id])
-    render json: report
+    render json: ReportsSerializer.format_report_data(report)
   end
 
   def create
