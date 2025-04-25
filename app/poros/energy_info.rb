@@ -35,12 +35,13 @@ class EnergyInfo
     #Returns EnergyInfo object will fully sanitized and calculated data, ready for rendering/other
     
     residence_data = self.new(user_search_data)
+    # binding.pry
+    residence_data.state = CsvHelper.state_by_zip(residence_data.zip_code)
     rate = CsvHelper.price_by_zip(residence_data.zip_code)
 
     residence_data.zip_res_rate = rate[:residential]
     residence_data.zip_ind_rate = rate[:industrial]
     residence_data.zip_comm_rate = rate[:commercial]
-    residence_data.state = CsvHelper.state_by_zip(residence_data.zip_code)
     eia_reports = EiaGateway.report_details(residence_data.state)
     residence_data.state_res_average = eia_reports[:residential]
     residence_data.state_ind_average = eia_reports[:industrial]

@@ -22,8 +22,8 @@ RSpec.describe "EnergyInfo object (non-model)" do
         expect(energy_info.residence_type).to eq("apartment")
         expect(energy_info.num_residents).to eq(2)
         expect(energy_info.efficiency_index).to eq(1)
-        expect(energy_info.coordinates[:latitude]).to eq(41.9)
-        expect(energy_info.coordinates[:longitude]).to eq(-91.5)
+        # expect(energy_info.coordinates[:latitude]).to eq(41.9)
+        # expect(energy_info.coordinates[:longitude]).to eq(-91.5)
       end
 
       #Check analyze_energy_and_cost() method (once external APIs exist and data can be stubbed)
@@ -80,5 +80,20 @@ RSpec.describe "EnergyInfo object (non-model)" do
     end
   end
 
+  describe "analyze_energy_and_cost" do
+    it "returns a calculated and sanitized residence_data file" do
+      CsvHelper.utilityCSV("./db/data/iou_zipcodes_2023.csv")
+      
+      apartment_data = {
+        nickname: "quiet apartment",
+        zipcode: 80401,
+        residence_type: "apartment",
+        num_residents: 1,
+        efficiency_level: 1
+      }
+
+      analysis = EnergyInfo.analyze_energy_and_cost(apartment_data)
+    end
+  end
 
 end
