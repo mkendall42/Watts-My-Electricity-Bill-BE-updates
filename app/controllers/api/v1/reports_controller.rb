@@ -24,23 +24,34 @@ class Api::V1::ReportsController < ApplicationController
     end
   end
 
-  def energy_usage
-    usage_data = {
-      location: params[:location],
-      type: params[:type],
-      occupants: params[:occupants],
-      energy_usage: params[:energy_usage]
-    }
-
-    render json: usage_data
-  end
+  # def energy_usage
+  #   usage_data = {
+  #     location: params[:location],
+  #     type: params[:type],
+  #     occupants: params[:occupants],
+  #     energy_usage: params[:energy_usage]
+  #   }
+  #
+  #   render json: usage_data
+  # end
 
   private
 
-  def report_params
-    params.permit(:user_id, :nickname, :energy_usage, :energy_cost)
-  end
-
+def report_params
+  params.permit(
+    :user_id,
+    :nickname,
+    :energy_consumption,
+    :energy_cost,
+    :state,
+    :state_residential_avg,
+    :state_industrial_avg,
+    :state_commercial_avg,
+    :zip_residential_avg,
+    :zip_industrial_avg,
+    :zip_commercial_avg
+  )
+end
   def record_not_found(exception)
     render json: { error: exception.message }, status: :not_found
   end
@@ -49,3 +60,4 @@ class Api::V1::ReportsController < ApplicationController
     render json: { error: exception.record.errors.full_messages }, status: :unprocessable_entity
   end
 end
+
