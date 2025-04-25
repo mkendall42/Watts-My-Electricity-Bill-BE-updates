@@ -38,4 +38,47 @@ RSpec.describe "EnergyInfo object (non-model)" do
     end
   end
 
+  describe "energy consumption and cost calculations" do
+    it "successfully computes two residences, generates reasonable answers" do
+      #Basic apartment first
+      apartment_data = {
+        nickname: "quiet apartment",
+        zipcode: 12345,
+        residence_type: "apartment",
+        num_residents: 1,
+        efficiency_level: 1
+      }
+      efficient_apartment = EnergyInfo.new(apartment_data)
+      efficient_apartment.zip_res_rate = 0.12
+
+      efficient_apartment.calculate_energy_consumption
+      efficient_apartment.calculate_cost
+
+      expect(efficient_apartment.energy_consumption).to be_a(Float)
+      expect(efficient_apartment.energy_consumption).to eq(2500)
+      expect(efficient_apartment.cost).to be_a(Float)
+      expect(efficient_apartment.cost).to eq(420)
+
+      #Now a busy house
+      house_data = {
+        nickname: "busy electricity guzzling house",
+        zipcode: 12345,
+        residence_type: "house",
+        num_residents: 5,
+        efficiency_level: 2
+      }
+      busy_house = EnergyInfo.new(house_data)
+      busy_house.zip_res_rate = 0.12
+
+      busy_house.calculate_energy_consumption
+      busy_house.calculate_cost
+
+      expect(busy_house.energy_consumption).to be_a(Float)
+      expect(busy_house.energy_consumption.round(1)).to eq(32831.6)
+      expect(busy_house.cost).to be_a(Float)
+      expect(busy_house.cost.round(1)).to eq(5515.7)
+    end
+  end
+
+
 end

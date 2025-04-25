@@ -68,14 +68,15 @@ class EnergyInfo
       apartment: 1,
       house: 2.5
     }
-    fees_factor = 1.4
 
-    @energy_consumption = 2500 * coefficients[@residence_type] * (@num_occupants ** 0.6) * @efficiency_index * fees_factor
+    @energy_consumption = 2500 * coefficients[@residence_type.to_sym] * (@num_residents ** 0.6) * @efficiency_index
   end
   
   def calculate_cost
     #Calculate electricity cost based on determined rate (and perhaps return two values)
+    fees_factor = 1.4
 
+    @cost = @energy_consumption * @zip_res_rate * fees_factor
   end
 
 end
