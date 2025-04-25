@@ -13,3 +13,24 @@
 @user4 = User.create!(username: "plittle")
 @user5 = User.create!(username: "jason")
 
+@report1 = Report.create!(
+  nickname: 'Winter Estimate',
+  energy_usage: 350,
+  energy_cost: 45.99
+)
+
+@report2 = Report.create!(
+  nickname: 'Summer Cooling',
+  energy_usage: 620,
+  energy_cost: 88.50
+)
+
+UserReport.create!(user: @user1, report: @report1)
+UserReport.create!(user: @user1, report: @report2)
+
+@report3 = Report.create!(
+  nickname: "Bob’s Bill",
+  energy_usage: 300,
+  energy_cost: 39.99
+)
+UserReport.create!(user: @user2, report: @report3)
