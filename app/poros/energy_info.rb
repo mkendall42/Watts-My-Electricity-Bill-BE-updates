@@ -61,7 +61,16 @@ class EnergyInfo
   
   def calculate_energy_consumption
     #Estimate / calculate energy consumption
+    #efficiency_index needs updating later (once it can be a larger range)
+    #Use type of accomodation, number of occupants, energy efficiency
+    coefficients = {
+      #Add more for other residence types
+      apartment: 1,
+      house: 2.5
+    }
+    fees_factor = 1.4
 
+    @energy_consumption = 2500 * coefficients[@residence_type] * (@num_occupants ** 0.6) * @efficiency_index * fees_factor
   end
   
   def calculate_cost
