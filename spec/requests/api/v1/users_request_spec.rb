@@ -3,11 +3,11 @@ require "rails_helper"
 RSpec.describe "Users controller", type: :request do
   before(:each) do
     #Create a few users
-    @user1 = User.create!(username: "jbickler")
-    @user2 = User.create!(username: "jbloom")
-    @user3 = User.create!(username: "mkendall")
-    @user4 = User.create!(username: "plittle")
-    @user5 = User.create!(username: "jason")
+    @user1 = User.create!(username: "jbickler", id: 1)
+    @user2 = User.create!(username: "jbloom", id: 2)
+    @user3 = User.create!(username: "mkendall", id: 3)
+    @user4 = User.create!(username: "plittle", id: 4)
+    @user5 = User.create!(username: "jason", id: 5)
     #Create a few reports (these will clearly need more info - DB migration - later)
     @report1 = Report.create!(nickname: "van down by the river", energy_usage: 1219, energy_cost: 461)
     @report2 = Report.create!(nickname: "small apartment", energy_usage: 1800, energy_cost: 850)
@@ -89,6 +89,23 @@ RSpec.describe "Users controller", type: :request do
     end
   end
 
+  describe "#show" do
+    it "returns a user based on ID" do
+    get "/api/v1/users/1"
+
+    expect(response).to be_successful
+    json = JSON.parse(response.body, symbolize_names: true)
+
+    expect(json.count).to eq(3)
+    expect(json[:username]). to eq("jbickler")
+
+    get "/api/v1/users/2"
+
+    expect(response).to be_successful
+    json = JSON.parse(response.body, symbolize_names: true)
+    expect(json[:username]). to eq("jbloom")
+    end
+  end
   #update?
 
   #destroy?
