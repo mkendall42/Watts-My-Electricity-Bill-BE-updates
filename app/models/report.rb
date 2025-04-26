@@ -6,7 +6,9 @@ class Report < ApplicationRecord
   validates :energy_consumption, presence: true
   validates :energy_cost, presence: true
 
-  def self.is_unique_nickname?(text)
-    !Report.find_by(nickname: text)
+  def self.is_unique_nickname?(text, user_id)
+    #Must be unique for a single user only
+    return false if User.find(user_id).reports.where(nickname: text) != []
+    return true
   end
 end

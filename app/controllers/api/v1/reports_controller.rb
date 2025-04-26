@@ -15,6 +15,10 @@ class Api::V1::ReportsController < ApplicationController
 
   def create
     report = Report.new(report_params.except(:user_id))
+    if !Report.is_unique_nickname?(params[:nickname], params[:user_id])
+      render json: { status: 422, message: "Nickname must be unique." }, status: :unprocessable_entity
+      return
+    end
     
     if report.save
       UserReport.create!(user_id: report_params[:user_id], report_id: report.id)

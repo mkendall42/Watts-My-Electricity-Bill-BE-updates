@@ -2,6 +2,8 @@ require "rails_helper"
 
 RSpec.describe "Utilities controller", type: :request do
   describe "#show - FE requests utility data rates from BE for specific search criteria" do
+    #NOTE: add zip code checking (and make sure lat/lon removed)
+    #NOTE: update uniqueness checking if needed
     context "happy paths" do
       #One example (simple) - basic mocked/stubbed external API call to one location
       it "basic successful test" do
