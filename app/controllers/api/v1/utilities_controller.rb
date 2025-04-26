@@ -31,7 +31,7 @@ class Api::V1::UtilitiesController < ApplicationController
     return messages if messages != []
 
     #Validate incoming parameters appropriately
-    messages << "Error: nickname must be unique." if !Report.is_unique_nickname?(params[:nickname])
+    # messages << "Error: nickname must be unique." if !Report.is_unique_nickname?(params[:nickname])
     # messages << "Error: zipcode value must be legal." if param[:zipcode].length != 5
     messages << "Error: residence type must be 'apartment' or 'house'." if !["apartment", "house"].include?(params[:residence_type])
     messages << "Error: number of residents must be an integer > 0." if !(params[:num_residents].to_i > 0)
