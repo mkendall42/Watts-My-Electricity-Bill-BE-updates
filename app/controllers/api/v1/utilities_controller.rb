@@ -9,8 +9,9 @@ class Api::V1::UtilitiesController < ApplicationController
       render json: ErrorSerializer.format_params_error(messages, 422), status: :unprocessable_content
     else
       #Generate energy information based on API calls via gateways, sanitizing data, and running calculations:
-      CsvHelper.utilityCSV("./db/data/iou_zipcodes_2023.csv")
+      data = CsvHelper.utilityCSV("./db/data/iou_zipcodes_2023.csv")
       residence_data = EnergyInfo.analyze_energy_and_cost(params.permit(:nickname, :zipcode, :residence_type, :num_residents, :efficiency_level))
+      p residence_data, data
   
       #Process anything necessary / calculations, then serialize and return JSON to FE.
       render json: UtilitiesSerializer.format_energy_data(residence_data)
