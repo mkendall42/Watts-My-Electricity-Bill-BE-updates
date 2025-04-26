@@ -27,8 +27,8 @@ class EnergyInfo
     @state_res_average = nil
     @state_ind_average = nil
     @state_comm_average = nil
-    @energy_consumption = 2500
-    @cost = 380
+    @energy_consumption = nil
+    @cost = nil
   end
 
   def self.analyze_energy_and_cost(user_search_data)
@@ -54,7 +54,7 @@ class EnergyInfo
     #Calculate energy consumption and cost based on all the above (dummy values and empty methods for now, can implement near the very end of project)
     residence_data.calculate_energy_consumption
     residence_data.calculate_cost
-    p residence_data
+    # p residence_data
     return residence_data
   end
 
@@ -70,7 +70,7 @@ class EnergyInfo
       house: 2.5
     }
 
-    @energy_consumption = 2500 * coefficients[@residence_type.to_sym] * (@num_residents.to_f ** 0.6) * @efficiency_index.to_f
+    @energy_consumption = 1500 * coefficients[@residence_type.to_sym] * (@num_residents.to_f ** 0.5) * (1.0 + (0.15 * @efficiency_index.to_f) ** 1.2)
   end
   
   def calculate_cost

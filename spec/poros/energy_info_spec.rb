@@ -41,11 +41,11 @@ RSpec.describe "EnergyInfo object (non-model)" do
     it "successfully computes two residences, generates reasonable answers" do
       #Basic apartment first
       apartment_data = {
-        nickname: "quiet apartment",
+        nickname: "quiet efficient apartment",
         zipcode: 12345,
         residence_type: "apartment",
         num_residents: 1,
-        efficiency_level: 1
+        efficiency_level: 2
       }
       efficient_apartment = EnergyInfo.new(apartment_data)
       efficient_apartment.zip_res_rate = 0.12
@@ -54,9 +54,9 @@ RSpec.describe "EnergyInfo object (non-model)" do
       efficient_apartment.calculate_cost
 
       expect(efficient_apartment.energy_consumption).to be_a(Float)
-      expect(efficient_apartment.energy_consumption).to eq(2500)
+      expect(efficient_apartment.energy_consumption.round(1)).to eq(1853.7)
       expect(efficient_apartment.cost).to be_a(Float)
-      expect(efficient_apartment.cost).to eq(420)
+      expect(efficient_apartment.cost.round(1)).to eq(311.4)
 
       #Now a busy house
       house_data = {
@@ -64,7 +64,7 @@ RSpec.describe "EnergyInfo object (non-model)" do
         zipcode: 12345,
         residence_type: "house",
         num_residents: 5,
-        efficiency_level: 2
+        efficiency_level: 9
       }
       busy_house = EnergyInfo.new(house_data)
       busy_house.zip_res_rate = 0.12
@@ -73,9 +73,9 @@ RSpec.describe "EnergyInfo object (non-model)" do
       busy_house.calculate_cost
 
       expect(busy_house.energy_consumption).to be_a(Float)
-      expect(busy_house.energy_consumption.round(1)).to eq(32831.6)
+      expect(busy_house.energy_consumption.round(1)).to eq(20405.6)
       expect(busy_house.cost).to be_a(Float)
-      expect(busy_house.cost.round(1)).to eq(5515.7)
+      expect(busy_house.cost.round(1)).to eq(3428.1)
     end
   end
 
@@ -92,22 +92,14 @@ RSpec.describe "EnergyInfo object (non-model)" do
       }
 
       analysis = EnergyInfo.analyze_energy_and_cost(apartment_data)
-    end
-  end
 
-  describe "calculate_energy_consumption" do
-    it "can calculate consumed energy and return a number" do
-      CsvHelper.utilityCSV("./db/data/iou_zipcodes_2023.csv")
-      apartment_data = {
-        nickname: "quiet apartment",
-        zipcode: 80401,
-        residence_type: "apartment",
-        num_residents: 1,
-        efficiency_level: 1
-      }
-      efficient_apartment = EnergyInfo.new(apartment_data)
-
-      expect(efficient_apartment.calculate_energy_consumption).to eq(2500.0)
+      #Check sample fields to ensure populated correctly
+      expect(analysis.state_ind_average).to be_a(Hash)
+      expect(analysis.state_ind_average[:sectorName]).to eq("industrial")
+      expect(analysis.zip_code).to eq(80401)
+      expect(analysis.zip_comm_rate).to be_a(Float)
+      expect(analysis.energy_consumption).to be_a(Float)
+      expect(analysis.cost).to be_a(Float) 
     end
   end
 
