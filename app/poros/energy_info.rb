@@ -70,7 +70,7 @@ class EnergyInfo
       house: 2.5
     }
 
-    @energy_consumption = 2500 * coefficients[@residence_type.to_sym] * (@num_residents.to_f ** 0.6) * @efficiency_index.to_f
+    @energy_consumption = 1500 * coefficients[@residence_type.to_sym] * (@num_residents.to_f ** 0.5) * (1.0 + (0.15 * @efficiency_index.to_f) ** 1.2)
   end
   
   def calculate_cost

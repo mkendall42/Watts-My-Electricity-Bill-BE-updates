@@ -35,7 +35,7 @@ class Api::V1::UtilitiesController < ApplicationController
     # messages << "Error: zipcode value must be legal." if param[:zipcode].length != 5
     messages << "Error: residence type must be 'apartment' or 'house'." if !["apartment", "house"].include?(params[:residence_type])
     messages << "Error: number of residents must be an integer > 0." if !(params[:num_residents].to_i > 0)
-    messages << "Error: efficiency level must be 1 or 2." if ![1, 2].include?(params[:efficiency_level].to_i)
+    messages << "Error: efficiency level must be within the range 1-10." if ((1..10).to_a.include?(params[:efficiency_level].to_i))
     
     return messages
   end
