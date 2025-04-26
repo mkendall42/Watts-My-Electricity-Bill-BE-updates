@@ -16,8 +16,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_17_171456) do
 
   create_table "reports", force: :cascade do |t|
     t.string "nickname"
-    t.float "energy_usage"
+    t.float "energy_consumption"
     t.float "energy_cost"
+    t.string "state"
+    t.float "state_residential_avg"
+    t.float "state_industrial_avg"
+    t.float "state_commercial_avg"
+    t.float "zip_residential_avg"
+    t.float "zip_industrial_avg"
+    t.float "zip_commercial_avg"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

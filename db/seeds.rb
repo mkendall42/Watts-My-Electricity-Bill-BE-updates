@@ -18,23 +18,44 @@ UserReport.destroy_all
 @user5 = User.create!(username: "jason")
 
 @report1 = Report.create!(
-  nickname: 'Winter Estimate',
-  energy_usage: 350,
-  energy_cost: 45.99
+    nickname: "House",
+    energy_consumption: 234,
+    energy_cost: 74.39,
+    state: "CO",
+    state_residential_avg: 12,
+    state_industrial_avg: 22,
+    state_commercial_avg: 12,
+    zip_residential_avg: 0.01,
+    zip_industrial_avg: 0.02,
+    zip_commercial_avg: 0.02,
 )
 
 @report2 = Report.create!(
   nickname: 'Summer Cooling',
-  energy_usage: 620,
-  energy_cost: 88.50
+  energy_consumption: 620,
+  energy_cost: 88.50,
+  state: "CA",
+  state_residential_avg: 12,
+  state_industrial_avg: 22,
+  state_commercial_avg: 12,
+  zip_residential_avg: 0.01,
+  zip_industrial_avg: 0.02,
+  zip_commercial_avg: 0.02,
 )
-
-UserReport.create!(user: @user1, report: @report1)
-UserReport.create!(user: @user1, report: @report2)
 
 @report3 = Report.create!(
   nickname: "Bob’s Bill",
-  energy_usage: 300,
-  energy_cost: 39.99
+  energy_consumption: 300,
+  energy_cost: 39.99,
+  state: "CA",
+  state_residential_avg: 12,
+  state_industrial_avg: 22,
+  state_commercial_avg: 12,
+  zip_residential_avg: 0.01,
+  zip_industrial_avg: 0.02,
+  zip_commercial_avg: 0.02,
 )
+
 UserReport.create!(user: @user2, report: @report3)
+UserReport.create!(user: @user1, report: @report1)
+UserReport.create!(user: @user1, report: @report2)
