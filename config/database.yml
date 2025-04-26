@@ -79,6 +79,10 @@ test:
 #
 production:
   <<: *default
+  adapter: postgresql
+  encoding: unicode
   database: watts_my_electricity_bill_production
-  username: watts_my_electricity_bill
+  username: your_db_username
   password: <%= ENV["WATTS_MY_ELECTRICITY_BILL_DATABASE_PASSWORD"] %>
+  host: your-db-hostname.onrender.com
+  port: 5432
