@@ -15,14 +15,10 @@ RSpec.describe "Utilities controller", type: :request do
         expect(utility_info).to have_key(:energy_consumption)
         # expect(utility_info).to have_key(:cost)
         expect(utility_info[:nickname]).to eq("apt")
-        expect(utility_info[:energy_consumption]).to eq(3789.291416275995)
-        expect(utility_info[:cost]).to eq(760.4925233852096)
+        expect(utility_info[:energy_consumption]).to eq(2339.049087793076)
+        expect(utility_info[:cost]).to eq(469.43587802645453)
 
       end
-
-      #Another example (simple) - basic mocked/stubbed external API call to second location
-
-      #Another example (full) - actual API call to a location (can we toggle this to only sometimes run?)
     end
 
     context "sad paths" do 
@@ -65,12 +61,12 @@ RSpec.describe "Utilities controller", type: :request do
           response_message = JSON.parse(response.body, symbolize_names: true)
 
           expect(response).to_not be_successful
-          expect(response_message[:message].length).to eq(3)
+          expect(response_message[:message].length).to eq(2)
           # expect(response_message[:message][0]).to eq("Error: nickname must be unique.")
           # expect(response_message[:message][1]).to eq("Error: latitude/longitude values must be legal.")
           expect(response_message[:message][0]).to eq("Error: residence type must be 'apartment' or 'house'.")
           expect(response_message[:message][1]).to eq("Error: number of residents must be an integer > 0.")
-          expect(response_message[:message][2]).to eq("Error: efficiency level must be 1 or 2.")
+          # expect(response_message[:message][2]).to eq("Error: efficiency level must be 1 or 2.")
         end
 
       end

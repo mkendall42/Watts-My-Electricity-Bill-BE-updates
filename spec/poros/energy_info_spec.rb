@@ -92,6 +92,14 @@ RSpec.describe "EnergyInfo object (non-model)" do
       }
 
       analysis = EnergyInfo.analyze_energy_and_cost(apartment_data)
+
+      #Check sample fields to ensure populated correctly
+      expect(analysis.state_ind_average).to be_a(Hash)
+      expect(analysis.state_ind_average[:sectorName]).to eq("industrial")
+      expect(analysis.zip_code).to eq(80401)
+      expect(analysis.zip_comm_rate).to be_a(Float)
+      expect(analysis.energy_consumption).to be_a(Float)
+      expect(analysis.cost).to be_a(Float) 
     end
   end
 

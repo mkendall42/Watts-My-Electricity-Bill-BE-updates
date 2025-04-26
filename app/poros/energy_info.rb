@@ -27,8 +27,8 @@ class EnergyInfo
     @state_res_average = nil
     @state_ind_average = nil
     @state_comm_average = nil
-    @energy_consumption = 2500
-    @cost = 380
+    @energy_consumption = nil
+    @cost = nil
   end
 
   def self.analyze_energy_and_cost(user_search_data)
