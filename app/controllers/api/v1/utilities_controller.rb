@@ -9,9 +9,9 @@ class Api::V1::UtilitiesController < ApplicationController
       render json: ErrorSerializer.format_params_error(messages, 422), status: :unprocessable_content
     else
       #Generate energy information based on API calls via gateways, sanitizing data, and running calculations:
-      CsvHelper.utilityCSV("./db/data/iou_zipcodes_2023.csv")
+      # CsvHelper.utilityCSV("./db/data/iou_zipcodes_2023.csv")
       residence_data = EnergyInfo.analyze_energy_and_cost(params.permit(:nickname, :zipcode, :residence_type, :num_residents, :efficiency_level))
-  
+      p residence_data 
       #Process anything necessary / calculations, then serialize and return JSON to FE.
       render json: UtilitiesSerializer.format_energy_data(residence_data)
     end
@@ -31,9 +31,9 @@ class Api::V1::UtilitiesController < ApplicationController
     return messages if messages != []
 
     #Validate incoming parameters appropriately
-    messages << "Error: nickname must be unique." if !Report.is_unique_nickname?(params[:nickname])
+    # messages << "Error: nickname must be unique." if !Report.is_unique_nickname?(params[:nickname])
     # messages << "Error: zipcode value must be legal." if param[:zipcode].length != 5
-    # messages << "Error: residence type must be 'apartment' or 'house'." if !["apartment", "house"].include?(params[:residence_type])
+    messages << "Error: residence type must be 'apartment' or 'house'." if !["apartment", "house"].include?(params[:residence_type])
     messages << "Error: number of residents must be an integer > 0." if !(params[:num_residents].to_i > 0)
     messages << "Error: efficiency level must be 1 or 2." if ![1, 2].include?(params[:efficiency_level].to_i)
     

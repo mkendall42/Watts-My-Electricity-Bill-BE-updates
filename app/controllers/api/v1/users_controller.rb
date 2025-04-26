@@ -1,12 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_id
 
-  #Additional likely actions:
-  # - index (list all users, for FE dropdown)
-  # - create (new user, probably pretty simple)
-  # - update (add report to existing user...other things too?)
-  # - destroy (optional, if we want to have this at all)
-
   def index
     users = User.all
     render json: UsersSerializer.format_users(users)

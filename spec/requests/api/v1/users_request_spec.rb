@@ -9,12 +9,83 @@ RSpec.describe "Users controller", type: :request do
     @user4 = User.create!(username: "plittle", id: 4)
     @user5 = User.create!(username: "jason", id: 5)
     #Create a few reports (these will clearly need more info - DB migration - later)
-    @report1 = Report.create!(nickname: "van down by the river", energy_usage: 1219, energy_cost: 461)
-    @report2 = Report.create!(nickname: "small apartment", energy_usage: 1800, energy_cost: 850)
-    @report3 = Report.create!(nickname: "townhouse", energy_usage: 2550, energy_cost: 1284)
-    @report4 = Report.create!(nickname: "5 floor narrow condo", energy_usage: 2663, energy_cost: 1699)
-    @report5 = Report.create!(nickname: "4 bedroom house", energy_usage: 3903, energy_cost: 2497)
-    @report6 = Report.create!(nickname: "vail mountain mansion", energy_usage: 7128, energy_cost: 5088)
+    @report1 = Report.create!(
+    nickname: "House",
+    energy_consumption: 234,
+    energy_cost: 74.39,
+    state: "CO",
+    state_residential_avg: 12,
+    state_industrial_avg: 22,
+    state_commercial_avg: 12,
+    zip_residential_avg: 0.01,
+    zip_industrial_avg: 0.02,
+    zip_commercial_avg: 0.02,
+    )
+
+    @report2 = Report.create!(
+      nickname: 'Summer Cooling',
+      energy_consumption: 620,
+      energy_cost: 88.50,
+      state: "CA",
+      state_residential_avg: 12,
+      state_industrial_avg: 22,
+      state_commercial_avg: 12,
+      zip_residential_avg: 0.01,
+      zip_industrial_avg: 0.02,
+      zip_commercial_avg: 0.02,
+    )
+
+    @report3 = Report.create!(
+      nickname: "Bob’s Bill",
+      energy_consumption: 300,
+      energy_cost: 39.99,
+      state: "CA",
+      state_residential_avg: 12,
+      state_industrial_avg: 22,
+      state_commercial_avg: 12,
+      zip_residential_avg: 0.01,
+      zip_industrial_avg: 0.02,
+      zip_commercial_avg: 0.02,
+    )
+
+    @report4 = Report.create!(
+      nickname: "it's a huge house",
+      energy_consumption: 300,
+      energy_cost: 39.99,
+      state: "SE",
+      state_residential_avg: 12,
+      state_industrial_avg: 22,
+      state_commercial_avg: 12,
+      zip_residential_avg: 0.01,
+      zip_industrial_avg: 0.02,
+      zip_commercial_avg: 0.02,
+    )
+
+    @report5 = Report.create!(
+      nickname: "4 bedroom house",
+      energy_consumption: 300,
+      energy_cost: 39.99,
+      state: "CA",
+      state_residential_avg: 12,
+      state_industrial_avg: 22,
+      state_commercial_avg: 12,
+      zip_residential_avg: 0.01,
+      zip_industrial_avg: 0.02,
+      zip_commercial_avg: 0.02,
+    )
+
+    @report6 = Report.create!(
+      nickname: "tiny place",
+      energy_consumption: 50,
+      energy_cost: 39.99,
+      state: "CA",
+      state_residential_avg: 12,
+      state_industrial_avg: 22,
+      state_commercial_avg: 12,
+      zip_residential_avg: 0.01,
+      zip_industrial_avg: 0.02,
+      zip_commercial_avg: 0.02,
+    )
     #Associate 'em:
     @user_report1 = UserReport.create!(user_id: @user1.id, report_id: @report3.id)
     @user_report1 = UserReport.create!(user_id: @user1.id, report_id: @report5.id)
@@ -45,7 +116,7 @@ RSpec.describe "Users controller", type: :request do
           expect(report).to have_key(:nickname)
           expect(report).to have_key(:id)
         end
-        expect(user_data[:reports][0][:nickname]).to eq("townhouse")
+        expect(user_data[:reports][0][:nickname]).to eq("Bob’s Bill")
         expect(user_data[:reports][0][:id]).to eq(@report3.id)
         expect(user_data[:reports][1][:nickname]).to eq("4 bedroom house")
         expect(user_data[:reports][1][:id]).to eq(@report5.id)
@@ -73,6 +144,21 @@ RSpec.describe "Users controller", type: :request do
         expect(error_message[:status]).to eq(404)
         expect(error_message[:message]).to eq("Error: Couldn't find User with 'id'=#{invalid_id}.")
       end
+      it "returns a user based on ID" do
+        get "/api/v1/users/1"
+
+        expect(response).to be_successful
+        json = JSON.parse(response.body, symbolize_names: true)
+
+        expect(json.count).to eq(3)
+        expect(json[:username]). to eq("jbickler")
+
+        get "/api/v1/users/2"
+
+        expect(response).to be_successful
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json[:username]). to eq("jbloom")
+      end
     end
   end
 
@@ -88,26 +174,4 @@ RSpec.describe "Users controller", type: :request do
       expect(json[0][:username]). to eq("jbickler")
     end
   end
-
-  describe "#show" do
-    it "returns a user based on ID" do
-    get "/api/v1/users/1"
-
-    expect(response).to be_successful
-    json = JSON.parse(response.body, symbolize_names: true)
-
-    expect(json.count).to eq(3)
-    expect(json[:username]). to eq("jbickler")
-
-    get "/api/v1/users/2"
-
-    expect(response).to be_successful
-    json = JSON.parse(response.body, symbolize_names: true)
-    expect(json[:username]). to eq("jbloom")
-    end
-  end
-  #update?
-
-  #destroy?
-
 end
