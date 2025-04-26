@@ -17,9 +17,9 @@ Rails.application.routes.draw do
       end
   
       resources :reports, only: [:create, :show] do
-        collection do
-          get :energy_usage
-        end
+        # collection do
+        #   get :energy_usage
+        # end
       end
     end
   end
