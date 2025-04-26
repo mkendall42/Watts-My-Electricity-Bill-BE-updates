@@ -15,8 +15,8 @@ RSpec.describe "Utilities controller", type: :request do
         expect(utility_info).to have_key(:energy_consumption)
         # expect(utility_info).to have_key(:cost)
         expect(utility_info[:nickname]).to eq("apt")
-        expect(utility_info[:energy_consumption]).to eq(2500)
-        expect(utility_info[:cost]).to eq(380)
+        expect(utility_info[:energy_consumption]).to eq(3789.291416275995)
+        expect(utility_info[:cost]).to eq(760.4925233852096)
 
       end
 
@@ -48,17 +48,29 @@ RSpec.describe "Utilities controller", type: :request do
         
         it "all parameters are invalid / out of range" do
           #Since error messages are generated separately, this covers all bases in essence
-          Report.create!(nickname: "newplace", energy_usage: 1000, energy_cost: 711)
+          Report.create!(
+            nickname: "newplace",
+            energy_consumption: 234,
+            energy_cost: 74.39,
+            state: "CO",
+            state_residential_avg: 12,
+            state_industrial_avg: 22,
+            state_commercial_avg: 12,
+            zip_residential_avg: 0.01,
+            zip_industrial_avg: 0.02,
+            zip_commercial_avg: 0.02,
+          )
+
           get "#{api_v1_utilities_path}?nickname=newplace&zipcode=80236&residence_type=shack&num_residents=-1&efficiency_level=4"
           response_message = JSON.parse(response.body, symbolize_names: true)
 
           expect(response).to_not be_successful
-          expect(response_message[:message].length).to eq(3)
+          expect(response_message[:message].length).to eq(4)
           expect(response_message[:message][0]).to eq("Error: nickname must be unique.")
           # expect(response_message[:message][1]).to eq("Error: latitude/longitude values must be legal.")
-          expect(response_message[:message][2]).to eq("Error: residence type must be 'apartment' or 'house'.")
-          expect(response_message[:message][3]).to eq("Error: number of residents must be an integer > 0.")
-          expect(response_message[:message][4]).to eq("Error: efficiency level must be 1 or 2.")
+          expect(response_message[:message][1]).to eq("Error: residence type must be 'apartment' or 'house'.")
+          expect(response_message[:message][2]).to eq("Error: number of residents must be an integer > 0.")
+          expect(response_message[:message][3]).to eq("Error: efficiency level must be 1 or 2.")
         end
 
       end

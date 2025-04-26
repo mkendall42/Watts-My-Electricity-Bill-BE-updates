@@ -35,7 +35,6 @@ class EnergyInfo
     #Returns EnergyInfo object will fully sanitized and calculated data, ready for rendering/other
     
     residence_data = self.new(user_search_data)
-    # binding.pry
     residence_data.state = CsvHelper.state_by_zip(residence_data.zip_code)
     rate = CsvHelper.price_by_zip(residence_data.zip_code)
 
@@ -55,6 +54,7 @@ class EnergyInfo
     #Calculate energy consumption and cost based on all the above (dummy values and empty methods for now, can implement near the very end of project)
     residence_data.calculate_energy_consumption
     residence_data.calculate_cost
+    p residence_data
     return residence_data
   end
 

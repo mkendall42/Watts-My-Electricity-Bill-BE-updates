@@ -16,6 +16,7 @@ class EiaGateway
     industrial = full_response[:response][:data].find { |data| data[:sectorName] == "industrial" }
     commercial = full_response[:response][:data].find { |data| data[:sectorName] == "commercial" }
 
+    p residential, industrial, commercial
     UtilitiesSerializer.format_building_type(residential, industrial, commercial)
   end
 end
