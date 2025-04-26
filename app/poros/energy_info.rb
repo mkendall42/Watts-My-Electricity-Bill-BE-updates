@@ -35,7 +35,6 @@ class EnergyInfo
     #Returns EnergyInfo object will fully sanitized and calculated data, ready for rendering/other
     
     residence_data = self.new(user_search_data)
-    # binding.pry
     residence_data.state = CsvHelper.state_by_zip(residence_data.zip_code)
     rate = CsvHelper.price_by_zip(residence_data.zip_code)
 
