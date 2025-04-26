@@ -93,17 +93,37 @@ Request an individual user's information (likely used by FE to display user's sa
 ### Users: Get all users (index)
 GET /api/v1/users to: /api/v1/users#index
   - This route will get all users in the database.
-
-### Reports: Get all reports (index)
-
-### Reports: Get single report details
-GET /api/v1/reports/:id to: /api/v1/reports#show
-
-### Reports: Create new report
-POST /api/v1/reports?<params> to: /api/v1/reports#create
+Response JSON:
+```
+ data:
+    [{
+        id: user id (integer),
+        username: username (string)
+    }]
 
 ```
-params: 
+
+    
+### Reports: Get single report details (show)
+GET /api/v1/reports/:id to: /api/v1/reports#show
+    - User id must be valid and exist
+Response JSON:
+```
+    {
+        id: user id (integer),
+        username: username (string)
+    ]
+```
+
+### Reports: Create new report (Create)
+POST /api/v1/reports?<params> to: /api/v1/reports#create
+    - This route creates a new report
+    - A user cannot have the same "nickname" for more than one 
+    - All parameters in body must be filled in
+    - 
+### Body:
+```
+{
     nickname: string,
     energy_consumption: float,
     cost: float,
@@ -114,4 +134,24 @@ params:
     zip_residential_avg: float,
     zip_industrial_avg: float,
     zip_commercial_avg: float,
+}
+```
+### User Reports: Get All reports for a user (Index)
+GET /api/v1/user/:id/reports to: /api/v1/reports#index
+    - This route gets all the user reports (only id and name) for a given user id
+    - User id needs to be a valid value in the data base
+### Body:
+```
+    report_list = user.reports.map do |report|
+      {
+        nickname: nickname of report,
+        id: id of report
+      }
+
+    {
+      username: username of user,
+      num_reports: length of report array,
+      reports: report_list (list of users reports
+    }
+
 ```
