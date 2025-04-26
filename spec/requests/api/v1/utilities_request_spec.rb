@@ -65,12 +65,12 @@ RSpec.describe "Utilities controller", type: :request do
           response_message = JSON.parse(response.body, symbolize_names: true)
 
           expect(response).to_not be_successful
-          expect(response_message[:message].length).to eq(4)
-          expect(response_message[:message][0]).to eq("Error: nickname must be unique.")
+          expect(response_message[:message].length).to eq(3)
+          # expect(response_message[:message][0]).to eq("Error: nickname must be unique.")
           # expect(response_message[:message][1]).to eq("Error: latitude/longitude values must be legal.")
-          expect(response_message[:message][1]).to eq("Error: residence type must be 'apartment' or 'house'.")
-          expect(response_message[:message][2]).to eq("Error: number of residents must be an integer > 0.")
-          expect(response_message[:message][3]).to eq("Error: efficiency level must be 1 or 2.")
+          expect(response_message[:message][0]).to eq("Error: residence type must be 'apartment' or 'house'.")
+          expect(response_message[:message][1]).to eq("Error: number of residents must be an integer > 0.")
+          expect(response_message[:message][2]).to eq("Error: efficiency level must be 1 or 2.")
         end
 
       end

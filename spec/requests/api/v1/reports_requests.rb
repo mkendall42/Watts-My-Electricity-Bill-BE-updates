@@ -24,7 +24,7 @@ RSpec.describe "Api::V1::ReportsController", type: :request do
       get "/api/v1/users/#{@user.id}/reports"
 
       expect(response).to have_http_status(:ok)
-      body = JSON.parse(response.body)
+      body = JSON.parse(response.body, symbolize_names: true)
       expect(body.first[:nickname]).to eq("House")
       expect(body.first[:energy_consumption]).to eq(234)
       expect(body.first[:energy_cost]).to eq(74.39)
@@ -83,7 +83,7 @@ RSpec.describe "Api::V1::ReportsController", type: :request do
       }
 
       expect(response).to have_http_status(:created)
-      body = JSON.parse(response.body)
+      body = JSON.parse(response.body, symbolize_names: true)
       expect(body[:nickname]).to eq("House")
       expect(body[:energy_consumption]).to eq(234)
       expect(body[:energy_cost]).to eq(74.39)
