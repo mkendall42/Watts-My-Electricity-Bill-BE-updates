@@ -47,6 +47,7 @@ group :development, :test do
   gem "pry"
   gem "rspec-rails"
   gem 'csv'
+  gem 'dotenv-rails'
 end
 
 group :development do
