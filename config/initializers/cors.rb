@@ -17,6 +17,7 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     origins 'https://watts-my-electricity-bill-fe.onrender.com' # Your Vite dev server
+    origins 'http://localhost:5173'
 
     resource '*',
       headers: :any,
