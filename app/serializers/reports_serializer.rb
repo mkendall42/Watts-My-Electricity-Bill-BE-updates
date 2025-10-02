@@ -17,4 +17,15 @@ class ReportsSerializer
       }
     }
   end
+
+  def self.format_deleted_report_data(report, prior_user)
+    {
+      deleted_report: {
+        nickname: report.nickname,
+        id: report.id,
+        associated_username: prior_user.username
+      },
+      num_remaining_reports: Report.all.length
+    }
+  end
 end
