@@ -183,7 +183,13 @@ RSpec.describe "Api::V1::ReportsController", type: :request do
     end
 
     it "returns 404 if specified report does not exist" do
+      absurdly_large_id = 10000000
+      delete api_v1_report_path(absurdly_large_id)
+      error_message = JSON.parse(response.body, symbolize_names: true)
 
+      expect(response).to have_http_status(:not_found)
+      expect(error_message).to be_a(Hash)
+      expect(error_message[:error]).to eq("Couldn't find Report with 'id'=#{absurdly_large_id}")
     end
   end
 end
