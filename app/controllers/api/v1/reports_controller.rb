@@ -28,6 +28,16 @@ class Api::V1::ReportsController < ApplicationController
     end
   end
 
+  def destroy
+    #It appears find() already triggers proper raising of exceptions...huh.
+    report_to_delete = Report.find(params[:id])
+    prior_user = report_to_delete.user
+
+    report_to_delete.destroy
+
+    render json: ReportsSerializer.format_deleted_report_data(report_to_delete, prior_user)
+  end
+
   # def energy_usage
   #   usage_data = {
   #     location: params[:location],
@@ -41,21 +51,22 @@ class Api::V1::ReportsController < ApplicationController
 
   private
 
-def report_params
-  params.permit(
-    :user_id,
-    :nickname,
-    :energy_consumption,
-    :energy_cost,
-    :state,
-    :state_residential_avg,
-    :state_industrial_avg,
-    :state_commercial_avg,
-    :zip_residential_avg,
-    :zip_industrial_avg,
-    :zip_commercial_avg
-  )
-end
+  def report_params
+    params.permit(
+      :user_id,
+      :nickname,
+      :energy_consumption,
+      :energy_cost,
+      :state,
+      :state_residential_avg,
+      :state_industrial_avg,
+      :state_commercial_avg,
+      :zip_residential_avg,
+      :zip_industrial_avg,
+      :zip_commercial_avg
+    )
+  end
+
   def record_not_found(exception)
     render json: { error: exception.message }, status: :not_found
   end
