@@ -151,4 +151,39 @@ RSpec.describe "Api::V1::ReportsController", type: :request do
   #     expect(body["occupants"]).to eq("2") 
   #   end
   # end
+
+  describe "DELETE /api/v1/reports/:id" do
+    it "deletes a specified record correctly" do
+      report_1 = Report.create!(nickname: "Van down by the river", energy_consumption: 200, energy_cost: 120.0)
+      tmp_id_1 = report_1.id
+      report_2 = Report.create!(nickname: "Motorhome by the lake", energy_consumption: 350, energy_cost: 240.0)
+      tmp_id_2 = report_2.id
+      report_3 = Report.create!(nickname: "Modular house by the ocean", energy_consumption: 500, energy_cost: 360.0)
+
+      UserReport.create!(user: @user, report: report_1)
+      UserReport.create!(user: @user, report: report_2)
+
+      delete api_v1_report_path(tmp_id_1)
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to have_http_status(:ok)
+      expect(body[:deleted_report][:nickname]).to eq("Van down by the river")
+      expect(body[:deleted_report][:id]).to eq(tmp_id_1)
+      expect(body[:deleted_report][:associated_username]).to eq("test_user")
+      expect(body[:num_remaining_reports]).to eq(2)
+      
+      expect(Report.all.length).to eq(2)
+      expect{ Report.find(tmp_id_1) }.to raise_error(ActiveRecord::RecordNotFound)
+
+      delete api_v1_report_path(tmp_id_2)
+      body = JSON.parse(response.body, symbolize_names: true)
+
+      expect(Report.all.length).to eq(1)
+      expect{ Report.find(tmp_id_2) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "returns 404 if specified report does not exist" do
+
+    end
+  end
 end
