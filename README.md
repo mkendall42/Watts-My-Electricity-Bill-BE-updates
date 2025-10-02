@@ -112,7 +112,7 @@ Response JSON:
     {
         id: user id (integer),
         username: username (string)
-    ]
+    }
 ```
 
 ### Reports: Create new report (Create)
@@ -137,10 +137,10 @@ POST /api/v1/reports?<params> to: /api/v1/reports#create
 }
 ```
 ### User Reports: Get All reports for a user (Index)
-GET /api/v1/user/:id/reports to: /api/v1/reports#index
+- GET /api/v1/user/:id/reports to: /api/v1/reports#index
     - This route gets all the user reports (only id and name) for a given user id
     - User id needs to be a valid value in the data base
-### Body:
+- Response body:
 ```
     report_list = user.reports.map do |report|
       {
@@ -151,7 +151,36 @@ GET /api/v1/user/:id/reports to: /api/v1/reports#index
     {
       username: username of user,
       num_reports: length of report array,
-      reports: report_list (list of users reports
+      reports: report_list (list of users reports)
     }
 
 ```
+
+### Reports: delete report
+
+Delete a specific report based on its ID.
+
+- `DELETE /api/v1/reports/:id`.  Here, `:id` is the ID of the report to be deleted.
+- Response structure:
+    - Status:
+        1. 200 - successful deletion, standard JSON (stucture shown below).
+        2. 404 - ID invalid / does not exist in database.
+    - Body: returns JSON data.  Typical structure:
+        ```
+        {
+            deleted_report: {
+                nickname: <string>,
+                id: <integer>,
+                associated_username: <string>,
+            },
+            num_remaining_reports: <integer>
+        }
+        ```
+        For an error, typical structure is:
+        ```
+        {
+            status: 404,
+            message: <string - ActiveRecord exception>
+        }
+        ```
+- Note: the ID referenced is absoluate as assigned in the database, NOT relative to a specific user (though it is associated with a user).
