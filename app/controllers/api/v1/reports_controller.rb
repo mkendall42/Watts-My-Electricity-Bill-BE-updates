@@ -3,6 +3,7 @@ class Api::V1::ReportsController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
 
   def index
+    #Technically, this a specific user's reports; perhaps house under a specialized controller...
     user = User.find(params[:user_id])
     reports = user.reports
     render json: reports
