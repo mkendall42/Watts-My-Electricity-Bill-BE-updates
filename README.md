@@ -142,7 +142,12 @@ Return all information about a single report, including the user which it belong
 - Note: to retrieve the report, no user information is needed in the request (for simplicity).
 
 ### Reports: Create new report (Create)
-POST `/api/v1/reports?<params>` to: /api/v1/reports#create
+
+Creates a new report.  For the time being, all data for creation is passed as a set of parameters (see the body structure for keys and format).
+
+- POST `/api/v1/reports?<params>`.  Routes to: /api/v1/reports#create.  For the time being, all data for report creation is passed via parameters.
+- Response structure (as JSON):
+
     - This route creates a new report
     - A user cannot have the same "nickname" for more than one 
     - All parameters in body must be filled in
@@ -152,7 +157,7 @@ POST `/api/v1/reports?<params>` to: /api/v1/reports#create
 {
     nickname: <string>,
     energy_consumption: <float>,
-    cost: <float>,
+    energy_cost: <float>,
     state: <string>,
     state_residential_avg: <float>,
     state_industrial_avg: <float>,
@@ -162,6 +167,12 @@ POST `/api/v1/reports?<params>` to: /api/v1/reports#create
     zip_commercial_avg: <float>,
 }
 ```
+- Notes:
+    - For a given user, 'nickname' must be a unique string for simplicity
+    - Many of the parameters are actually optional.  At present, only `user`, `nickname`, `energy_consumption`, and `energy_cost` are required.  Further, `user` is effectively a hidden requirement; this needs to be explicitly built into a request body later.
+    - I will later make the POST request send the data via a body (probably better practice vs dubious handling of parameters here...)
+    
+
 ### User Reports: Get All reports for a user (Index)
 - GET /api/v1/user/:id/reports to: /api/v1/reports#index
     - This route gets all the user reports (only id and name) for a given user id
@@ -209,4 +220,4 @@ Delete a specific report based on its ID.
             message: <string - ActiveRecord exception>
         }
         ```
-- Note: the ID referenced is absoluate as assigned in the database, NOT relative to a specific user (though it is associated with a user).
+- Note: the ID referenced is absolute as assigned in the database, NOT relative to a specific user (though it is associated with a user).

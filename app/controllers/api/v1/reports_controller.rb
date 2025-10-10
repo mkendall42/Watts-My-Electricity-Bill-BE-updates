@@ -3,7 +3,8 @@ class Api::V1::ReportsController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
 
   def index
-    #Technically, this a specific user's reports; perhaps house under a specialized controller...
+    #Technically, this a specific user's reports; perhaps house under a specialized controller;
+    #something like UserReportsController?
     user = User.find(params[:user_id])
     reports = user.reports
     render json: reports
@@ -15,6 +16,8 @@ class Api::V1::ReportsController < ApplicationController
   end
 
   def create
+    #Similar issue here; really it is being created for a specific user (or just always rely on that in the FE)
+
     report = Report.new(report_params.except(:user_id))
     if !Report.is_unique_nickname?(params[:nickname], params[:user_id])
       render json: { status: 422, message: "Nickname must be unique." }, status: :unprocessable_entity
