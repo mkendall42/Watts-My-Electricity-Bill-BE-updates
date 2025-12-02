@@ -37,3 +37,8 @@
 /config/application.yml
 
 /env.yml
+
+#Terraform-specific files
+/terraform/*.tfvars
+/terraform/.terraform
+/terraform/terraform.tfstate

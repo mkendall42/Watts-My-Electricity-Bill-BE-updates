@@ -1,13 +1,20 @@
 # syntax = docker/dockerfile:1
 
+#NOTE: much of this was present before Nov 2025 (when I'm explicitly working on it);
+#perhaps a groupmate had started trying this out or something?  I don't recall...
+
+
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.2.2
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
 # Rails app lives here
-WORKDIR /rails
+# WORKDIR /rails
+#UPDATE: I think the above is wrong; here's what I'm trying now:
+WORKDIR /app
 
 # Set production environment
+#I guess the deployment is just the number / version?
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
@@ -15,9 +22,11 @@ ENV RAILS_ENV="production" \
 
 
 # Throw-away build stage to reduce size of final image
+#I don't really understand how this step works / what it does???
 FROM base as build
 
 # Install packages needed to build gems
+#Is this really needed?  Perhaps on a system without Ruby by default?  But I'm running Docker from my system...
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libpq-dev libvips pkg-config
 
@@ -43,6 +52,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
+#I don't follow this, especially the second line (no absolute nor relative path exists in this repo!)
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
 
