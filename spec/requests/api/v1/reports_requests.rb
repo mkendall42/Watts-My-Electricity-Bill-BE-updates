@@ -96,6 +96,10 @@ RSpec.describe "Api::V1::ReportsController", type: :request do
       expect(body[:zip_commercial_avg]).to eq(0.02)
     end
 
+    it "creates a new report with minimum required params" do
+      #Fill this in and test!
+    end
+
     it "returns 422 if required params are missing" do
       post "/api/v1/reports", params: {
         user_id: @user.id,
