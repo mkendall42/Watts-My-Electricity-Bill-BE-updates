@@ -36,11 +36,11 @@ resource "aws_ecr_lifecycle_policy" "app_repo_policy" {
     rules = [
       {
         rulePriority = 1
-        description  = "Keep last 5 images"
+        description  = "Keep last 4 images"     #Keep basic for now (esp if money could get involved)
         selection = {
           tagStatus   = "any"
           countType   = "imageCountMoreThan"
-          countNumber = 5
+          countNumber = 4
         }
         action = {
           type = "expire"
@@ -60,15 +60,22 @@ resource "aws_ecs_task_definition" "app_task" {
     family = "${var.project_name}-${var.environment}-task"
     requires_compatibilities = ["FARGATE"]      #Fargate is for serverless containers (I guess that's me)
     network_mode = "awsvpc"
-    cpu = 256           # 0.25 vCPU (???)
+    cpu = 256           # 0.25 vCPU (unclear on details, but this is 256 'units' of CPU resources, which equates to a common threshold in AWS of v0.25)
     memory = 512        # 512MB of RAM
-    execution_role_am = aws_iam_role.ecs_execution_role.am
+    execution_role_arn = aws_iam_role.ecs_execution_role.arn
 
     container_definitions = jsonencode([
     {
         name  = "${var.project_name}-container"
         image = "${aws_ecr_repository.app_repo.repository_url}:latest"
     
+        environment = [
+            {
+                name: "SECRET_KEY_BASE",
+                value: "684972d49701a23ea0df8d987878ca48"       #At least try to get this to 'cat' the file or something...
+            }
+        ]
+
         portMappings = [
             {
             containerPort = 3000  # Port your app listens on
@@ -167,7 +174,7 @@ resource "aws_security_group" "app_sg" {
 resource "aws_ecs_service" "app_service" {
   name            = "${var.project_name}-${var.environment}-service"
   cluster         = aws_ecs_cluster.app_cluster.id
-  task_definition = aws_ecs_task_definition.app_task.arn    #What is 'arn' here?
+  task_definition = aws_ecs_task_definition.app_task.arn    #NOTE: arn = Amazon Resource Name (unique ID for each one)
   desired_count   = 1  # Run 1 instance of your container
   launch_type     = "FARGATE"
 
