@@ -75,6 +75,13 @@ resource "aws_ecs_task_definition" "app_task" {
                 value: "684972d49701a23ea0df8d987878ca48"       #At least try to get this to 'cat' the file or something...
             }
         ]
+        #Later: add AWS secrets (via AWS secrets manager).  Syntax is:
+        # secrets = [
+        #   {
+        #     name: "SUPER SECRET DAWG",
+        #     valueFrom: "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:SECRET_NAME"
+        #   }
+        # ]
 
         portMappings = [
             {
