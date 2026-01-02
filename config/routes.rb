@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
+  #Custom addition to handle database outage / missing:
+  # match "/500" => "errors#database_unavailable", :via => :all
+
   namespace :api do
     namespace :v1 do
       resources :utilities, only: :index

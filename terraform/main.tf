@@ -63,6 +63,7 @@ resource "aws_ecs_task_definition" "app_task" {
     cpu = 256           # 0.25 vCPU (unclear on details, but this is 256 'units' of CPU resources, which equates to a common threshold in AWS of v0.25)
     memory = 512        # 512MB of RAM
     execution_role_arn = aws_iam_role.ecs_execution_role.arn
+    #Later: will need a task role arn as well (to allow servers in containers to access resources)
 
     container_definitions = jsonencode([
     {

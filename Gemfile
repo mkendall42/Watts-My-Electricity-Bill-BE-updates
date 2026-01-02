@@ -46,15 +46,15 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   gem "pry"
   gem "rspec-rails"
-  gem 'csv'
+  # gem 'csv'
   gem 'dotenv-rails'
 end
 
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-  gem 'rack-cors'
-  gem 'csv'
+  # gem 'rack-cors'
+  # gem 'csv'
 end
 
 group :test do
@@ -63,4 +63,4 @@ group :test do
   gem "shoulda-matchers"
   gem "simplecov"
 end
-gem 'rack-cors'
+# gem 'rack-cors'

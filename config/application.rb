@@ -28,5 +28,11 @@ module WattsMyElectricityBill
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    #Custom addition for handling general database outage
+    # config.exceptions_app = self.routes
+    # config.action_dispatch.show_exceptions = :none
+    config.action_dispatch.rescue_responses["ActiveRecord::NoDatabaseError"] = :service_unavailable
+
   end
 end

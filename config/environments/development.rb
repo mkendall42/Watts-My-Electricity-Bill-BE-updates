@@ -13,6 +13,9 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
+  #NOTE: for now disable this to see if my custom route intercepts 500 error correctly
+  # config.consider_all_requests_local = false
+  
 
   # Enable server timing
   config.server_timing = true
