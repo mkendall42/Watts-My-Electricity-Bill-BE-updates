@@ -6,6 +6,6 @@ class ApplicationController < ActionController::API
   protected
   
   def handle_database_errors(exception)
-    render json: { status: :service_unavailable, message: "Database connection error: #{exception.error_message}" }, status: :service_unavailable
+    render json: { status: :service_unavailable, message: "Database connection error: #{exception.message}" }, status: :service_unavailable
   end
 end

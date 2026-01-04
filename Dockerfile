@@ -10,6 +10,9 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
+#For the future, if considering secrets:
+# RUN --mount=type=secret,id=rails_master_key,target=rails/config/master.key SECRET_KEY_BASE_DUMMY=1 rails assets:precompile
+
 COPY . .
 
 EXPOSE 3000
