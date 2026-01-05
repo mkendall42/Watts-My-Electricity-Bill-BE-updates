@@ -71,9 +71,13 @@ resource "aws_ecs_task_definition" "app_task" {
         image = "${aws_ecr_repository.app_repo.repository_url}:latest"
     
         environment = [
+            # {
+            #     name: "SECRET_KEY_BASE",
+            #     value: "684972d49701a23ea0df8d987878ca48"       #At least try to get this to 'cat' the file or something...
+            # },
             {
-                name: "SECRET_KEY_BASE",
-                value: "684972d49701a23ea0df8d987878ca48"       #At least try to get this to 'cat' the file or something...
+                name: "RAILS_MASTER_KEY",
+                value: "684972d49701a23ea0df8d987878ca48"
             }
         ]
         #Later: add AWS secrets (via AWS secrets manager).  Syntax is:
