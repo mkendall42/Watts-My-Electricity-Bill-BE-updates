@@ -86,3 +86,16 @@ production:
   password: <%= ENV["WATTS_MY_ELECTRICITY_BILL_DATABASE_PASSWORD"] %>
   host: your-db-hostname.onrender.com
   port: 5432
+
+  #Prepare for AWS deployment - need to set environment vars to access Postgres
+  #DB correctly in RDS
+  #NOTE: I think just the DATABASE_URL var will cover all the bases for 'database' onward below...
+  # production:
+  # <<: *default
+  # adapter: postgresql
+  # encoding: unicode
+  # database: <%= ENV["DATABASE_NAME"] %>
+  # username: <%= ENV[] %>
+  # password: <%= ENV[] %>
+  # host: <%= ENV["DATABASE_HOST"] %>
+  # port: <%= ENV["DATABASE_PORT"] %>
